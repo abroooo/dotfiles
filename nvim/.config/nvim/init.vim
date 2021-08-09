@@ -13,6 +13,7 @@ call plug#begin(stdpath('data') . 'vimplug')
     Plug 'hrsh7th/nvim-compe'
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
     Plug 'nvim-treesitter/nvim-treesitter-textobjects'
+    Plug 'nvim-treesitter/playground'
     Plug 'liuchengxu/vista.vim'
     Plug 'rhysd/vim-clang-format'
     Plug 'nvim-lua/lsp-status.nvim'
@@ -208,6 +209,7 @@ require("treesitter")
 require("statusbar")
 require("completion")
 require("config_diffview")
+require'lspconfig'.pyright.setup{}
 
 -- require('tabout').setup {
 --     tabkey = '<Tab>', -- key to trigger tabout
