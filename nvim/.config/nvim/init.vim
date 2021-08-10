@@ -290,6 +290,10 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
+" Better indenting
+vnoremap < <gv
+vnoremap > >gv
+
 " Use alt + hjkl to resize windows
 nnoremap <silent> <A-j>    :resize -2<CR>
 nnoremap <silent> <A-k>    :resize +2<CR>
