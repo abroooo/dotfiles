@@ -8,7 +8,8 @@ call plug#begin(stdpath('data') . 'vimplug')
 
     " LSP and dev
     Plug 'neovim/nvim-lspconfig'
-    Plug 'kabouzeid/nvim-lspinstall'
+"    Plug 'kabouzeid/nvim-lspinstall'
+    Plug 'williamboman/nvim-lsp-installer'
     Plug 'glepnir/lspsaga.nvim'
     Plug 'hrsh7th/nvim-compe'
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -21,10 +22,15 @@ call plug#begin(stdpath('data') . 'vimplug')
     Plug 'hrsh7th/vim-vsnip'
     Plug 'rafamadriz/friendly-snippets'
     Plug 'hrsh7th/vim-vsnip-integ'
+    Plug 'sbdchd/neoformat'
+    Plug 'weilbith/nvim-code-action-menu'
+    Plug 'TimUntersberger/neogit'
+    Plug 'p00f/nvim-ts-rainbow'
 
     " Rest
     Plug 'glepnir/galaxyline.nvim', { 'branch': 'main' }
     Plug 'kyazdani42/nvim-web-devicons'  " needed for galaxyline icons
+    Plug 'kyazdani42/nvim-tree.lua'
 
     " colorschemes
     Plug 'NLKNguyen/papercolor-theme'
@@ -35,6 +41,8 @@ call plug#begin(stdpath('data') . 'vimplug')
     Plug 'justinmk/vim-sneak'
     Plug 'christoomey/vim-tmux-navigator'
     Plug 'p00f/nvim-ts-rainbow'
+    Plug 'voldikss/vim-floaterm'
+    Plug 'ThePrimeagen/harpoon'
 
 "    Plug 'tpope/vim-ragtag'
 "    Plug 'tpope/vim-surround'
@@ -211,8 +219,46 @@ require("lsp")
 require("treesitter")
 require("statusbar")
 require("completion")
-require("config_diffview")
+-- require("config_diffview")
 require'lspconfig'.pyright.setup{}
+require'nvim-treesitter.configs'.setup {
+  rainbow = {
+    enable = true,
+    extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
+    max_file_lines = nil, -- Do not enable for files with more than n lines, int
+    -- colors = {}, -- table of hex strings
+    -- termcolors = {} -- table of colour name strings
+  }
+}
+require'nvim-treesitter.configs'.setup{
+  rainbow = {
+    -- Setting colors
+    colors = {
+      -- Colors here
+    },
+    -- Term colors
+    termcolors = {
+      -- Term colors here
+    }
+  },
+}
+local neogit = require('neogit')
+
+neogit.setup {}
+
+
+-- ThePrimeagen harpoon
+require("harpoon").setup({
+    global_settings = {
+        save_on_toggle = false,
+        save_on_change = true,
+        enter_on_sendcmd = false,
+        tmux_autoclose_windows = false,
+        excluded_filetypes = { "harpoon" }
+    },
+ --   ... your other configs ...
+})
+
 
 -- require('tabout').setup {
 --     tabkey = '<Tab>', -- key to trigger tabout
@@ -233,6 +279,68 @@ require'lspconfig'.pyright.setup{}
 --     exclude = {} -- tabout will ignore these filetypes
 -- }
 
+-- nvim tree
+
+-- following options are the default
+-- each of these are documented in `:help nvim-tree.OPTION_NAME`
+require'nvim-tree'.setup {
+  disable_netrw       = true,
+  hijack_netrw        = true,
+  open_on_setup       = false,
+  ignore_ft_on_setup  = {},
+  auto_close          = false,
+  open_on_tab         = false,
+  hijack_cursor       = false,
+  update_cwd          = false,
+  update_to_buf_dir   = {
+    enable = true,
+    auto_open = true,
+  },
+  diagnostics = {
+    enable = false,
+    icons = {
+      hint = "",
+      info = "",
+      warning = "",
+      error = "",
+    }
+  },
+  update_focused_file = {
+    enable      = false,
+    update_cwd  = false,
+    ignore_list = {}
+  },
+  system_open = {
+    cmd  = nil,
+    args = {}
+  },
+  filters = {
+    dotfiles = false,
+    custom = {}
+  },
+  git = {
+    enable = true,
+    ignore = true,
+    timeout = 500,
+  },
+  view = {
+    width = 30,
+    height = 30,
+    hide_root_folder = false,
+    side = 'left',
+    auto_resize = false,
+    mappings = {
+      custom_only = false,
+      list = {}
+    },
+    number = false,
+    relativenumber = false
+  },
+  trash = {
+    cmd = "trash",
+    require_confirm = true
+  }
+}
 
 EOF
 
@@ -241,6 +349,11 @@ EOF
 " Jenkins syntax highlighting
 au BufNewFile,BufRead Jenkinsfile setf groovy
 
+" #############################################################################
+" nvim tree configuration
+" #############################################################################
+"let g:nvim_tree_auto_open = 1
+"let g:nvim_tree_disable_window_picker = 1
 
 " #############################################################################
 "vimwiki config start
@@ -364,6 +477,16 @@ endfunction
 
 :autocmd CursorMoved,CursorMovedI * call CentreCursor()
 
+" custom setting for clangformat
+let g:neoformat_cpp_clangformat = {
+    \ 'exe': 'clang-format-11',
+    \ 'args': ['--style=file']
+\}
+let g:neoformat_enabled_cpp = ['clangformat']
+let g:neoformat_enabled_c = ['clangformat']
 
-
+"augroup fmt
+"  autocmd!
+"  autocmd BufWritePre *.cpp Neoformat
+"augroup END
 
