@@ -26,6 +26,8 @@ call plug#begin(stdpath('data') . 'vimplug')
     Plug 'weilbith/nvim-code-action-menu'
     Plug 'TimUntersberger/neogit'
     Plug 'p00f/nvim-ts-rainbow'
+    Plug 'ahmedkhalf/lsp-rooter.nvim'
+    Plug 'simrat39/symbols-outline.nvim'
 
     " Rest
     Plug 'glepnir/galaxyline.nvim', { 'branch': 'main' }
@@ -36,6 +38,8 @@ call plug#begin(stdpath('data') . 'vimplug')
     Plug 'NLKNguyen/papercolor-theme'
     Plug 'gruvbox-community/gruvbox'
     Plug 'nikvdp/neomux'
+    Plug 'phanviet/vim-monokai-pro'
+    Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 
     " utils
     Plug 'justinmk/vim-sneak'
@@ -155,6 +159,7 @@ let g:sneak#prompt = '🔎'
 " set leader key to ,
 let g:mapleader=" "
 
+
 " ---------
 " Telescope
 " ---------
@@ -195,16 +200,22 @@ nnoremap <silent> <C-]> <cmd>lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> gD    <cmd>lua vim.lsp.buf.declaration()<CR>
 nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
 nnoremap <silent> gi    <cmd>lua vim.lsp.buf.implementation()<CR>
+nnoremap <silent> gh    <cmd>lua vim.lsp.buf.hover()<CR>
 nnoremap <silent> K     <cmd>Lspsaga hover_doc<CR>
 nnoremap <silent> <C-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
 nnoremap <silent> <C-p> <cmd>Lspsaga diagnostic_jump_prev<CR>
 nnoremap <silent> <C-n> <cmd>Lspsaga diagnostic_jump_next<CR>
 nnoremap <silent> gf    <cmd>lua vim.lsp.buf.formatting()<CR>
-nnoremap <silent> gn    <cmd>lua vim.lsp.buf.rename()<CR>
+nnoremap <silent> gn    <cmd>lua vim.lsp.buf.code_action()<CR>
 nnoremap <silent> ga    <cmd>Lspsaga code_action<CR>
 xnoremap <silent> ga    <cmd>Lspsaga range_code_action<CR>
 nnoremap <silent> gs    <cmd>Lspsaga signature_help<CR>
 
+" --------------
+" Treesitter
+" --------------
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
 
 " >> setup nerdcomment key bindings
 let g:NERDCreateDefaultMappings = 0
@@ -216,10 +227,11 @@ nnoremap <Leader>ci :call NERDComment('n', 'toggle')<CR>
 
 lua <<EOF
 require("lsp")
+-- require("symbols-outline.lua")
 require("treesitter")
 require("statusbar")
 require("completion")
--- require("config_diffview")
+require("config_diffview")
 require'lspconfig'.pyright.setup{}
 require'nvim-treesitter.configs'.setup {
   rainbow = {
@@ -245,7 +257,6 @@ require'nvim-treesitter.configs'.setup{
 local neogit = require('neogit')
 
 neogit.setup {}
-
 
 -- ThePrimeagen harpoon
 require("harpoon").setup({
@@ -280,7 +291,7 @@ require("harpoon").setup({
 -- }
 
 -- nvim tree
-
+vim.g["nvim_tree_disable_window_picker"] = 1
 -- following options are the default
 -- each of these are documented in `:help nvim-tree.OPTION_NAME`
 require'nvim-tree'.setup {
@@ -341,6 +352,13 @@ require'nvim-tree'.setup {
     require_confirm = true
   }
 }
+
+-- lsp rooter
+  require("lsp-rooter").setup {
+    -- your configuration comes here
+    -- or leave it empty to use the default settings
+    -- refer to the configuration section below
+  }
 
 EOF
 
@@ -438,6 +456,12 @@ nnoremap <C-l> <C-w>l
 " Better indenting
 vnoremap < <gv
 vnoremap > >gv
+
+" Use alt + hjkl to resize windows
+nnoremap <silent> <A-j>    :resize -2<CR>
+nnoremap <silent> <A-k>    :resize +2<CR>
+nnoremap <silent> <A-h>    :vertical resize -2<CR>
+nnoremap <silent> <A-l>    :vertical resize +2<CR>
 
 " Use alt + hjkl to resize windows
 nnoremap <silent> <A-j>    :resize -2<CR>
