@@ -1,7 +1,11 @@
 #!/bin/sh
 export ZDOTDIR=$HOME/.config/zsh
 HISTFILE=~/.zsh_history
-setopt appendhistory
+#setopt appendhistory
+# Appends every command to the history file once it is executed
+setopt inc_append_history
+# Reloads the history whenever you use it
+setopt share_history
 
 # some useful options (man zshoptions)
 setopt autocd extendedglob nomatch menucomplete
@@ -87,6 +91,7 @@ xset r rate 210 40
 export EDITOR="nvim"
 export TERMINAL="alacritty"
 export BROWSER="brave"
+export FZF_ALT_C_COMMAND="fdfind -t d -H . $HOME"
 
 # For QT Themes
 export QT_QPA_PLATFORMTHEME=qt5ct
@@ -95,4 +100,5 @@ export QT_QPA_PLATFORMTHEME=qt5ct
 setxkbmap -option caps:escape
 # swap escape and caps
 # setxkbmap -option caps:swapescape
+ setxkbmap eurkey
 
