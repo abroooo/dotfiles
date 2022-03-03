@@ -18,7 +18,6 @@ call plug#begin(stdpath('data') . 'vimplug')
     Plug 'liuchengxu/vista.vim'
     Plug 'rhysd/vim-clang-format'
     Plug 'nvim-lua/lsp-status.nvim'
-    Plug 'tomtom/tcomment_vim'
     Plug 'hrsh7th/vim-vsnip'
     Plug 'rafamadriz/friendly-snippets'
     Plug 'hrsh7th/vim-vsnip-integ'
@@ -28,6 +27,7 @@ call plug#begin(stdpath('data') . 'vimplug')
     Plug 'p00f/nvim-ts-rainbow'
     Plug 'ahmedkhalf/lsp-rooter.nvim'
     Plug 'simrat39/symbols-outline.nvim'
+    Plug 'numToStr/Comment.nvim'
 
     " Rest
     Plug 'glepnir/galaxyline.nvim', { 'branch': 'main' }
@@ -40,6 +40,8 @@ call plug#begin(stdpath('data') . 'vimplug')
     Plug 'nikvdp/neomux'
     Plug 'phanviet/vim-monokai-pro'
     Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
+    Plug 'shaunsingh/nord.nvim'
+    Plug 'navarasu/onedark.nvim'
 
     " utils
     Plug 'justinmk/vim-sneak'
@@ -47,6 +49,7 @@ call plug#begin(stdpath('data') . 'vimplug')
     Plug 'p00f/nvim-ts-rainbow'
     Plug 'voldikss/vim-floaterm'
     Plug 'ThePrimeagen/harpoon'
+"    Plug 'rmagatti/auto-session'
 
 "    Plug 'tpope/vim-ragtag'
 "    Plug 'tpope/vim-surround'
@@ -54,6 +57,7 @@ call plug#begin(stdpath('data') . 'vimplug')
 
     Plug 'tpope/vim-eunuch'
     Plug 'tpope/vim-fugitive'
+    Plug 'junegunn/gv.vim'
     Plug 'vimwiki/vimwiki'
 
     Plug 'abecodes/tabout.nvim'
@@ -227,6 +231,105 @@ nnoremap <Leader>ci :call NERDComment('n', 'toggle')<CR>
 
 lua <<EOF
 require("lsp")
+
+require('onedark').setup {
+    style = 'darker'
+}
+require('onedark').load()
+require('Comment').setup({
+
+
+
+
+
+
+    ---Add a space b/w comment and the line
+    ---@type boolean
+    padding = true,
+
+    ---Whether the cursor should stay at its position
+    ---NOTE: This only affects NORMAL mode mappings and doesn't work with dot-repeat
+    ---@type boolean
+    sticky = true,
+
+    ---Lines to be ignored while comment/uncomment.
+    ---Could be a regex string or a function that returns a regex string.
+    ---Example: Use '^$' to ignore empty lines
+    ---@type string|fun():string
+    ignore = nil,
+
+    ---LHS of toggle mappings in NORMAL + VISUAL mode
+    ---@type table
+    toggler = {
+        ---Line-comment toggle keymap
+        line = 'gcc',
+        ---Block-comment toggle keymap
+        block = 'gbc',
+    },
+
+    ---LHS of operator-pending mappings in NORMAL + VISUAL mode
+    ---@type table
+    opleader = {
+        ---Line-comment keymap
+        line = 'gc',
+        ---Block-comment keymap
+        block = 'gb',
+    },
+
+    ---LHS of extra mappings
+    ---@type table
+    extra = {
+        ---Add comment on the line above
+        above = 'gcO',
+        ---Add comment on the line below
+        below = 'gco',
+        ---Add comment at the end of line
+        eol = 'gcA',
+    },
+
+    ---Create basic (operator-pending) and extended mappings for NORMAL + VISUAL mode
+    ---@type table
+    mappings = {
+        ---Operator-pending mapping
+        ---Includes `gcc`, `gbc`, `gc[count]{motion}` and `gb[count]{motion}`
+        ---NOTE: These mappings can be changed individually by `opleader` and `toggler` config
+        basic = true,
+        ---Extra mapping
+        ---Includes `gco`, `gcO`, `gcA`
+        extra = true,
+        ---Extended mapping
+        ---Includes `g>`, `g<`, `g>[count]{motion}` and `g<[count]{motion}`
+        extended = false,
+    },
+
+    ---Pre-hook, called before commenting the line
+    ---@type fun(ctx: Ctx):string
+    pre_hook = nil,
+
+    ---Post-hook, called after commenting is done
+    ---@type fun(ctx: Ctx)
+    post_hook = nil,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+})
 -- require("symbols-outline.lua")
 require("treesitter")
 require("statusbar")
@@ -359,6 +462,7 @@ require'nvim-tree'.setup {
     -- or leave it empty to use the default settings
     -- refer to the configuration section below
   }
+
 
 EOF
 
