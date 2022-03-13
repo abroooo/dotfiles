@@ -11,4 +11,6 @@
 ## zsh config located in ~/.config
 * add `export ZDOTDIR=$HOME/.config/zsh`
 
-
+## install
+* `stow .` to install
+* `stow -D .` to uninstall
