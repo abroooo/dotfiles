@@ -12,10 +12,13 @@ zle_highlight=('paste:none')
 # beeping is annoying
 unsetopt BEEP
 
+# exclude commands with a leading space from history
+setopt HIST_IGNORE_SPACE
 
 # completions
 autoload -Uz compinit
 zstyle ':completion:*' menu select
+zstyle ':completion:*' ignored-patterns 'bdump|rsyslog'
 # zstyle ':completion::complete:lsof:*' menu yes select
 zmodload zsh/complist
 # compinit
@@ -95,4 +98,7 @@ export QT_QPA_PLATFORMTHEME=qt5ct
 setxkbmap -option caps:escape
 # swap escape and caps
 # setxkbmap -option caps:swapescape
+setxkbmap eurkey
 
+ZSH_AUTOSUGGEST_HISTORY_IGNORE=*
+#ZSH_AUTOSUGGEST_HISTORY_IGNORE="(bdump *|curl *|bdump)"

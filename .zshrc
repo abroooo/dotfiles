@@ -1,7 +1,23 @@
 #!/bin/sh
 export ZDOTDIR=$HOME/.config/zsh
+HISTSIZE=1000000000
+SAVEHIST=1000000000
 HISTFILE=~/.zsh_history
-setopt appendhistory
+setopt APPENDHISTORY
+setopt INC_APPEND_HISTORY
+setopt HIST_FIND_NO_DUPS
+
+
+
+
+
+
+
+
+
+
+setopt HIST_IGNORE_SPACE
+alias jrnl=" jrnl"
 
 # some useful options (man zshoptions)
 setopt autocd extendedglob nomatch menucomplete
