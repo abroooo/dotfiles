@@ -4,7 +4,7 @@ alias f='zi'
 alias g='lazygit'
 alias zsh-update-plugins="find "$ZDOTDIR/plugins" -type d -exec test -e '{}/.git' ';' -print0 | xargs -I {} -0 git -C {} pull -q"
 alias nvimrc='nvim ~/.config/nvim/'
-alias ll='ls -lah'
+alias ll='exa -lah'
 
 
 # alias lvim='nvim -u ~/.local/share/lunarvim/lvim/init.lua --cmd "set runtimepath+=~/.local/share/lunarvim/lvim"'
@@ -76,3 +76,11 @@ CYGWIN* | MINGW32* | MSYS* | MINGW*)
 	# echo 'Other OS'
 	;;
 esac
+alias llvm-cov="llvm-cov-11"
+
+d(){
+echo  "$(date +"%Y%m%d|%H-%M"): $1" >> ~/git/personal_notes2.wiki/brain_dump.md
+clear
+}
+#alias dump="echo \"$(date +\\\"%Y%m%d|%H-%M\\\"): \" >> ~/git/personal_notes2.wiki/brain_dump.md"
+alias b="clear && bat ~/git/personal_notes2.wiki/brain_dump.md"

@@ -1,11 +1,12 @@
 #!/bin/sh
+asd
 export ZDOTDIR=$HOME/.config/zsh
 HISTFILE=~/.zsh_history
 #setopt appendhistory
 # Appends every command to the history file once it is executed
-setopt inc_append_history
+#setopt INC_APPEND_HISTORY
 # Reloads the history whenever you use it
-setopt share_history
+setopt SHARE_HISTORY
 
 # some useful options (man zshoptions)
 setopt autocd extendedglob nomatch menucomplete
