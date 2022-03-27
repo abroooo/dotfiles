@@ -90,6 +90,8 @@ set undofile
 set colorcolumn=120
 set cursorline
 set noswapfile
+set laststatus=3
+highlight WinSeperator guibg=None
 " set nobackup => do I need this?
 " set pastetoggle=<F2> => obsolete
 "
