@@ -77,4 +77,7 @@ CYGWIN* | MINGW32* | MSYS* | MINGW*)
 	;;
 esac
 
-alias nvim="~/appimage/nvim.appimage"
+tp(){
+    var=$(task projects rc.verbose:nothing | sed -e '$d;1,2d' | sort -k2 -n -r | awk '{print $1}' | fzf)
+ task project:$var
+}
