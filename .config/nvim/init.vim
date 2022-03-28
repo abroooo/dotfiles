@@ -28,6 +28,7 @@ call plug#begin(stdpath('data') . 'vimplug')
     Plug 'ahmedkhalf/lsp-rooter.nvim'
     Plug 'simrat39/symbols-outline.nvim'
     Plug 'numToStr/Comment.nvim'
+    Plug 'chipsenkbeil/distant.nvim'
 
     " Rest
     Plug 'glepnir/galaxyline.nvim', { 'branch': 'main' }
@@ -151,7 +152,7 @@ if exists('+termguicolors')
     let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
 let g:gruvbox_invert_selection='0'
-colorscheme gruvbox
+colorscheme kanagawa
 
 
 autocmd FileType py set tabstop=4 softtabstop=0 expandtab
@@ -257,7 +258,14 @@ nnoremap <Leader>ci :call NERDComment('n', 'toggle')<CR>
 
 lua <<EOF
 require("lsp")
-
+require('distant').setup {
+      -- Applies Chip's personal settings to every machine you connect to
+      --
+      -- 1. Ensures that distant servers terminate with no connections
+      -- 2. Provides navigation bindings for remote directories
+      -- 3. Provides keybinding to jump into a remote file's parent directory
+      ['*'] = require('distant.settings').chip_default()
+    }
 require('onedark').setup {
     style = 'darker'
 }
