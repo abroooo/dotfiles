@@ -33,6 +33,7 @@ call plug#begin(stdpath('data') . 'vimplug')
     Plug 'glepnir/galaxyline.nvim', { 'branch': 'main' }
     Plug 'kyazdani42/nvim-web-devicons'  " needed for galaxyline icons
     Plug 'kyazdani42/nvim-tree.lua'
+    Plug 'sunjon/shade.nvim'
 
     " colorschemes
     Plug 'NLKNguyen/papercolor-theme'
@@ -261,6 +262,17 @@ require('onedark').setup {
     style = 'darker'
 }
 require('onedark').load()
+
+require'shade'.setup({
+  overlay_opacity = 50,
+  opacity_step = 1,
+  keys = {
+    brightness_up    = '<C-Up>',
+    brightness_down  = '<C-Down>',
+    toggle           = '<Leader>s',
+  }
+})
+
 require('Comment').setup({
 
 
