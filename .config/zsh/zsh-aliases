@@ -57,6 +57,7 @@ alias mach_java_mode="export SDKMAN_DIR="$HOME/.sdkman" && [[ -s "$HOME/.sdkman/
 alias m="git checkout master"
 alias s="git checkout stable"
 alias gs="git status"
+alias gan="git commit --amend --no-edit"
 
 case "$(uname -s)" in
 
@@ -77,7 +78,25 @@ CYGWIN* | MINGW32* | MSYS* | MINGW*)
 	;;
 esac
 
-tp(){
+function tp(){
     var=$(task projects rc.verbose:nothing | sed -e '$d;1,2d' | sort -k2 -n -r | awk '{print $1}' | fzf)
- task project:$var
+    task project:$var
+}
+
+function gc(){
+    git commit -m $1
+}
+
+function gp(){
+    git push $1 $2
+}
+
+function gpu(){
+    if [ "$1" != "" ]
+    then
+        echo "$1 $2"
+    else
+        echo "Nothing"
+    fi
+    #it pull --rebase $1 $2
 }
