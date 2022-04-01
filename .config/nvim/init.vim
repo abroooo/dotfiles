@@ -439,7 +439,7 @@ require("harpoon").setup({
 -- }
 
 -- nvim tree
-vim.g["nvim_tree_disable_window_picker"] = 1
+-- vim.g["nvim_tree_disable_window_picker"] = 1 => deprecated
 -- following options are the default
 -- each of these are documented in `:help nvim-tree.OPTION_NAME`
 require'nvim-tree'.setup {

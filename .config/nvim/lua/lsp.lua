@@ -120,7 +120,9 @@ require'lspconfig'.clangd.setup {
     root_dir = function() return vim.loop.cwd() end
 }
 
-require'lspconfig'.pyls.setup{ on_attach=on_attach }
+
+--require'lspconfig'.pyls.setup{ on_attach=on_attach }
+require'lspconfig'.pylsp.setup{}
 
 require'lspconfig'.svelte.setup{}
 
