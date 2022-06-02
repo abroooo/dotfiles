@@ -53,6 +53,7 @@ call plug#begin(stdpath('data') . 'vimplug')
     Plug 'p00f/nvim-ts-rainbow'
     Plug 'voldikss/vim-floaterm'
     Plug 'ThePrimeagen/harpoon'
+    Plug 'tveskag/nvim-blame-line'
 "    Plug 'rmagatti/auto-session'
 
 "    Plug 'tpope/vim-ragtag'
