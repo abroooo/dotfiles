@@ -11,13 +11,24 @@ call plug#begin(stdpath('data') . 'vimplug')
 "    Plug 'kabouzeid/nvim-lspinstall'
     Plug 'williamboman/nvim-lsp-installer'
     Plug 'glepnir/lspsaga.nvim'
-    Plug 'hrsh7th/nvim-compe'
+    " Plug 'hrsh7th/nvim-compe'
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
     Plug 'nvim-treesitter/nvim-treesitter-textobjects'
     Plug 'nvim-treesitter/playground'
     Plug 'liuchengxu/vista.vim'
     Plug 'rhysd/vim-clang-format'
     Plug 'nvim-lua/lsp-status.nvim'
+    Plug 'hrsh7th/nvim-cmp'
+    Plug 'hrsh7th/cmp-buffer'
+    Plug 'hrsh7th/cmp-path'
+    Plug 'hrsh7th/cmp-cmdline'
+    Plug 'saadparwaiz1/cmp_luasnip'
+    Plug 'hrsh7th/cmp-nvim-lsp'
+    Plug 'jose-elias-alvarez/null-ls.nvim'
+    Plug 'filipdutescu/renamer.nvim'
+    Plug 'L3MON4D3/LuaSnip'
+    Plug 'rafamadriz/friendly-snippets'
+    Plug 'windwp/nvim-autopairs'
 "    Plug 'hrsh7th/vim-vsnip'
 "    Plug 'rafamadriz/friendly-snippets'
 "    Plug 'hrsh7th/vim-vsnip-integ'
@@ -69,6 +80,20 @@ call plug#begin(stdpath('data') . 'vimplug')
     Plug 'airblade/vim-rooter'
     Plug 'sindrets/diffview.nvim'
 call plug#end()
+
+
+" press <Tab> to expand or jump in a snippet. These can also be mapped separately
+" via <Plug>luasnip-expand-snippet and <Plug>luasnip-jump-next.
+imap <silent><expr> <Tab> luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<Tab>' 
+" -1 for jumping backwards.
+inoremap <silent> <S-Tab> <cmd>lua require'luasnip'.jump(-1)<Cr>
+
+snoremap <silent> <Tab> <cmd>lua require('luasnip').jump(1)<Cr>
+snoremap <silent> <S-Tab> <cmd>lua require('luasnip').jump(-1)<Cr>
+
+" For changing choices in choiceNodes (not strictly necessary for a basic setup).
+imap <silent><expr> <C-E> luasnip#choice_active() ? '<Plug>luasnip-next-choice' : '<C-E>'
+smap <silent><expr> <C-E> luasnip#choice_active() ? '<Plug>luasnip-next-choice' : '<C-E>'
 
 " #################################################
 " basic settings
@@ -258,6 +283,7 @@ nnoremap <Leader>ci :call NERDComment('n', 'toggle')<CR>
 
 
 lua <<EOF
+
 require("lsp")
 require('distant').setup {
       -- Applies Chip's personal settings to every machine you connect to
@@ -600,6 +626,9 @@ map <leader>ch :!sh generateHtml.sh execute
 " Mappings
 " #############################################################################
 "let mapleader="<Space>"
+
+" Clangd switch headersource
+nnoremap <C-Tab> :ClangdSwitchSourceHeader<CR>
 
 " Better window navigation
 nnoremap <C-h> <C-w>h
