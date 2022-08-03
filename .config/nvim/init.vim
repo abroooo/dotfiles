@@ -40,6 +40,8 @@ call plug#begin(stdpath('data') . 'vimplug')
     Plug 'simrat39/symbols-outline.nvim'
     Plug 'numToStr/Comment.nvim'
     Plug 'chipsenkbeil/distant.nvim'
+    Plug 'kevinhwang91/promise-async'
+    Plug 'kevinhwang91/nvim-ufo'
 
     " Rest
     Plug 'glepnir/galaxyline.nvim', { 'branch': 'main' }
@@ -285,6 +287,7 @@ nnoremap <Leader>ci :call NERDComment('n', 'toggle')<CR>
 lua <<EOF
 
 require("lsp")
+require("comment")
 require('distant').setup {
       -- Applies Chip's personal settings to every machine you connect to
       --
@@ -308,143 +311,18 @@ require'shade'.setup({
   }
 })
 
-require('Comment').setup({
-
-
-
-
-
-
-    ---Add a space b/w comment and the line
-    ---@type boolean
-    padding = true,
-
-    ---Whether the cursor should stay at its position
-    ---NOTE: This only affects NORMAL mode mappings and doesn't work with dot-repeat
-    ---@type boolean
-    sticky = true,
-
-    ---Lines to be ignored while comment/uncomment.
-    ---Could be a regex string or a function that returns a regex string.
-    ---Example: Use '^$' to ignore empty lines
-    ---@type string|fun():string
-    ignore = nil,
-
-    ---LHS of toggle mappings in NORMAL + VISUAL mode
-    ---@type table
-    toggler = {
-        ---Line-comment toggle keymap
-        line = 'gcc',
-        ---Block-comment toggle keymap
-        block = 'gbc',
-    },
-
-    ---LHS of operator-pending mappings in NORMAL + VISUAL mode
-    ---@type table
-    opleader = {
-        ---Line-comment keymap
-        line = 'gc',
-        ---Block-comment keymap
-        block = 'gb',
-    },
-
-    ---LHS of extra mappings
-    ---@type table
-    extra = {
-        ---Add comment on the line above
-        above = 'gcO',
-        ---Add comment on the line below
-        below = 'gco',
-        ---Add comment at the end of line
-        eol = 'gcA',
-    },
-
-    ---Create basic (operator-pending) and extended mappings for NORMAL + VISUAL mode
-    ---@type table
-    mappings = {
-        ---Operator-pending mapping
-        ---Includes `gcc`, `gbc`, `gc[count]{motion}` and `gb[count]{motion}`
-        ---NOTE: These mappings can be changed individually by `opleader` and `toggler` config
-        basic = true,
-        ---Extra mapping
-        ---Includes `gco`, `gcO`, `gcA`
-        extra = true,
-        ---Extended mapping
-        ---Includes `g>`, `g<`, `g>[count]{motion}` and `g<[count]{motion}`
-        extended = false,
-    },
-
-    ---Pre-hook, called before commenting the line
-    ---@type fun(ctx: Ctx):string
-    pre_hook = nil,
-
-    ---Post-hook, called after commenting is done
-    ---@type fun(ctx: Ctx)
-    post_hook = nil,
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-})
 -- require("symbols-outline.lua")
 require("treesitter")
 require("statusbar")
 require("completion")
 require("config_diffview")
 require'lspconfig'.pyright.setup{}
-require'nvim-treesitter.configs'.setup {
-  rainbow = {
-    enable = true,
-    extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
-    max_file_lines = nil, -- Do not enable for files with more than n lines, int
-    -- colors = {}, -- table of hex strings
-    -- termcolors = {} -- table of colour name strings
-  }
-}
-require'nvim-treesitter.configs'.setup{
-  rainbow = {
-    -- Setting colors
-    colors = {
-      -- Colors here
-    },
-    -- Term colors
-    termcolors = {
-      -- Term colors here
-    }
-  },
-}
 local neogit = require('neogit')
 
 neogit.setup {}
 
--- ThePrimeagen harpoon
-require("harpoon").setup({
-    global_settings = {
-        save_on_toggle = false,
-        save_on_change = true,
-        enter_on_sendcmd = false,
-        tmux_autoclose_windows = false,
-        excluded_filetypes = { "harpoon" }
-    },
- --   ... your other configs ...
-})
 
+require("harpoon_config")
 
 -- require('tabout').setup {
 --     tabkey = '<Tab>', -- key to trigger tabout
@@ -465,69 +343,7 @@ require("harpoon").setup({
 --     exclude = {} -- tabout will ignore these filetypes
 -- }
 
--- nvim tree
--- vim.g["nvim_tree_disable_window_picker"] = 1 => deprecated
--- following options are the default
--- each of these are documented in `:help nvim-tree.OPTION_NAME`
-require'nvim-tree'.setup {
-  disable_netrw       = true,
-  hijack_netrw        = true,
-  open_on_setup       = false,
-  ignore_ft_on_setup  = {},
-  auto_close          = false,
-  open_on_tab         = false,
-  hijack_cursor       = false,
-  update_cwd          = false,
-  update_to_buf_dir   = {
-    enable = true,
-    auto_open = true,
-  },
-  diagnostics = {
-    enable = false,
-    icons = {
-      hint = "",
-      info = "",
-      warning = "",
-      error = "",
-    }
-  },
-  update_focused_file = {
-    enable      = false,
-    update_cwd  = false,
-    ignore_list = {}
-  },
-  system_open = {
-    cmd  = nil,
-    args = {}
-  },
-  filters = {
-    dotfiles = false,
-    custom = {}
-  },
-  git = {
-    enable = true,
-    ignore = true,
-    timeout = 500,
-  },
-  view = {
-    width = 30,
-    height = 30,
-    hide_root_folder = false,
-    side = 'left',
-    auto_resize = false,
-    mappings = {
-      custom_only = false,
-      list = {}
-    },
-    number = false,
-    relativenumber = false
-  },
-  trash = {
-    cmd = "trash",
-    require_confirm = true
-  }
-}
-
+require("nvimtree")
 -- lsp rooter
   require("lsp-rooter").setup {
     -- your configuration comes here
@@ -540,6 +356,63 @@ vim.treesitter.set_query("python", "folds", [[
 ]])
 
 
+-- UFO
+vim.o.foldcolumn = '1'
+vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+vim.o.foldlevelstart = 99
+vim.o.foldenable = true
+
+--use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
+
+local handler = function(virtText, lnum, endLnum, width, truncate)
+    local newVirtText = {}
+    local suffix = ('  %d '):format(endLnum - lnum)
+    local sufWidth = vim.fn.strdisplaywidth(suffix)
+    local targetWidth = width - sufWidth
+    local curWidth = 0
+    for _, chunk in ipairs(virtText) do
+        local chunkText = chunk[1]
+        local chunkWidth = vim.fn.strdisplaywidth(chunkText)
+        if targetWidth > curWidth + chunkWidth then
+            table.insert(newVirtText, chunk)
+        else
+            chunkText = truncate(chunkText, targetWidth - curWidth)
+            local hlGroup = chunk[2]
+            table.insert(newVirtText, {chunkText, hlGroup})
+            chunkWidth = vim.fn.strdisplaywidth(chunkText)
+            -- str width returned from truncate() may less than 2nd argument, need padding
+            if curWidth + chunkWidth < targetWidth then
+                suffix = suffix .. (' '):rep(targetWidth - curWidth - chunkWidth)
+            end
+            break
+        end
+        curWidth = curWidth + chunkWidth
+    end
+    table.insert(newVirtText, {suffix, 'MoreMsg'})
+    return newVirtText
+end
+require('ufo').setup({
+    fold_virt_text_handler = handler,
+    provider_selector = function(bufnr, filetype, buftype)
+        return {'treesitter', 'indent'}
+    end
+})
+vim.keymap.set('n', 'K', function()
+    local winid = require('ufo').peekFoldedLinesUnderCursor()
+    if not winid then
+        -- choose one of them
+        -- coc.nvim
+        vim.fn.CocActionAsync('definitionHover')
+        -- nvimlsp
+        vim.lsp.buf.hover()
+    end
+end)
+
+
+-- buffer scope handler
+-- will override global handler if it is existed
+local bufnr = vim.api.nvim_get_current_buf()
+require('ufo').setFoldVirtTextHandler(bufnr, handler)
 EOF
 
 
