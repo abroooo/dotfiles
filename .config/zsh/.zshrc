@@ -96,4 +96,5 @@ export QT_QPA_PLATFORMTHEME=qt5ct
 # swap escape and caps
 # setxkbmap -option caps:swapescape
 
-
+export ZDOTDIR=$HOME/.config/zsh
+source $HOME/.nix-profile/etc/profile.d/nix.sh
