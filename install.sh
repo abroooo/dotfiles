@@ -18,7 +18,8 @@ nix-env -iA \
 	nixpkgs.bat \
 	nixpkgs.tldr \
 	nixpkgs.python3Full \
-	nixpkgs.lazygit
+	nixpkgs.lazygit \
+    nixpkgs.exa
 
 # stow dotfiles
 stow -S .
