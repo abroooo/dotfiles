@@ -159,7 +159,7 @@ require'lspconfig'.clangd.setup {
 --    on_attach = on_attach,
 --    root_dir = function() return vim.loop.cwd() end
 --    on_attach = require'completion'.on_attach;
-    capabilities = default,
+    capabilities = snippetSupport,
     cmd = { "clangd", "--background-index", "--cross-file-rename", "--compile-commands-dir=./build"},
    filetypes = { "c", "cpp", "objc", "objcpp" },
 --    on_init = function to handle changing offsetEncoding
@@ -278,3 +278,5 @@ cmp.setup {
     native_menu = false,
   },
 }
+local opts = { noremap=true, silent=true }
+vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)

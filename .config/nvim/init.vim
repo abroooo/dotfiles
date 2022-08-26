@@ -503,6 +503,9 @@ map <leader>ch :!sh generateHtml.sh execute
 " Clangd switch headersource
 nnoremap <C-Tab> :ClangdSwitchSourceHeader<CR>
 
+" close buffer without closing the window
+  map <leader>q :bp<bar>sp<bar>bn<bar>bd<CR>
+
 " Better window navigation
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
