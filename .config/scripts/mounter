@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# quickly mount a network share
+
+USER=alex
+MOUNT_COMMAND="sudo mount -t cifs -o username=alex,uid=$(id -u),gid=$(id -g),noserverino"
+MOUNT_BASE="/mnt"
+fzfcmd=$(which fzf)
+
+device=`cat $HOME/dotfiles/.config/scripts/devices | $fzfcmd`
+if [[ -z $device ]]; then
+    exit 0
+fi
+selected=`cat $HOME/dotfiles/.config/scripts/shares | $fzfcmd`
+if [[ -z $selected ]]; then
+    exit 0
+fi
+
+if grep -qs "$selected" $HOME/dotfiles/.config/scripts/shares; then
+    echo "$device"
+
+    if [ ! -d $MOUNT_BASE/$selected ] 
+    then
+        sudo mkdir $MOUNT_BASE/$selected
+        sudo chown $USER:users $MOUNT_BASE/$selected
+    fi
+
+    echo "$MOUNT_COMMAND //$device/$selected $MOUNT_BASE/$selected"
+    cmd="$MOUNT_COMMAND //$device/$selected $MOUNT_BASE/$selected"
+    eval $cmd
+else
+    echo $selected
+    echo "nope"
+fi
