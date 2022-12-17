@@ -1,6 +1,7 @@
 #!/bin/sh
 export ZDOTDIR=$HOME/.config/zsh
 HISTFILE=~/.zsh_history
+setopt share_history
 setopt appendhistory
 
 # some useful options (man zshoptions)
@@ -92,6 +93,9 @@ export BROWSER="brave"
 # For QT Themes
 export QT_QPA_PLATFORMTHEME=qt5ct
 
+# Add scripts to path
+path+=("$HOME/.config/scripts")
+export PATH
 # remap caps to escape
 # setxkbmap -option caps:escape
 # swap escape and caps
@@ -99,3 +103,4 @@ export QT_QPA_PLATFORMTHEME=qt5ct
 
 export ZDOTDIR=$HOME/.config/zsh
 source $HOME/.nix-profile/etc/profile.d/nix.sh
+eval "$(starship init zsh)"
