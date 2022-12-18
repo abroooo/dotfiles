@@ -2,6 +2,7 @@ set timeoutlen=200
 " >> load plugins
 call plug#begin(stdpath('data') . 'vimplug')
     " Telescope
+    Plug 'mechatroner/rainbow_csv'
     Plug 'nvim-lua/plenary.nvim'
     Plug 'nvim-lua/popup.nvim'
     Plug 'nvim-telescope/telescope.nvim'
@@ -42,6 +43,8 @@ call plug#begin(stdpath('data') . 'vimplug')
     Plug 'chipsenkbeil/distant.nvim'
     Plug 'kevinhwang91/promise-async'
     Plug 'kevinhwang91/nvim-ufo'
+    Plug 'mfussenegger/nvim-lint'
+    Plug 'folke/trouble.nvim'
 
     " Rest
     Plug 'glepnir/galaxyline.nvim', { 'branch': 'main' }
@@ -285,6 +288,25 @@ nnoremap <Leader>ci :call NERDComment('n', 'toggle')<CR>
 
 
 lua <<EOF
+require("lsp")
+require('lint').linters_by_ft = {
+  cpplint = {'cpplint',}
+}
+vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+  callback = function()
+    require("lint").try_lint()
+  end,
+})
+  require("trouble").setup {
+
+    -- your configuration comes here
+
+    -- or leave it empty to use the default settings
+
+    -- refer to the configuration section below
+
+  }
+
 
 require("lsp")
 require("comment")
@@ -573,3 +595,4 @@ let g:neoformat_enabled_c = ['clangformat']
 "  autocmd BufWritePre *.cpp Neoformat
 "augroup END
 
+au BufWritePost lua require('lint').try_lint()
