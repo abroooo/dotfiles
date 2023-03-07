@@ -30,6 +30,17 @@ return require('packer').startup(function(use)
 	end}
 
     use {
+        "ahmedkhalf/project.nvim",
+        config = function()
+            require("project_nvim").setup {
+                -- your configuration comes here
+                -- or leave it empty to use the default settings
+                -- refer to the configuration section below
+            }
+        end
+    }
+
+    use {
 	    'VonHeikemen/lsp-zero.nvim',
 	    requires = {
 		    -- LSP Support
@@ -91,5 +102,12 @@ return require('packer').startup(function(use)
 		"ray-x/lsp_signature.nvim",
 	}
 	use {'kevinhwang91/nvim-ufo', requires = 'kevinhwang91/promise-async'}
+    use {
+        'numToStr/Comment.nvim',
+        config = function()
+            require('Comment').setup()
+        end
+    }
+
 
 end)
