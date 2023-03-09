@@ -1,2 +1,2 @@
 require("config")
-print("hello")
+-- print("hello")

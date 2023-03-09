@@ -1,4 +1,6 @@
 --vim.opt.guicursor = ""
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
 
 vim.opt.nu = true
 vim.opt.relativenumber = true
@@ -16,7 +18,7 @@ vim.opt.swapfile = false
 vim.opt.backup = false
 vim.opt.undodir = os.getenv("HOME") .. "/.nvim/undodir" vim.opt.undofile = true
 
-vim.opt.hlsearch = false
+vim.opt.hlsearch = true
 vim.opt.incsearch = true
 
 vim.opt.termguicolors = true
@@ -28,6 +30,9 @@ vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
 
 vim.opt.colorcolumn = "80"
+
+vim.opt.laststatus = 3 -- statusbar 3: always and ONLY the last window
+	
 
 -- mine
 vim.opt.ruler = true
