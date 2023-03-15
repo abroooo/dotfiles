@@ -55,6 +55,7 @@ return require('packer').startup(function(use)
 		    {'saadparwaiz1/cmp_luasnip'},
 		    {'hrsh7th/cmp-nvim-lsp'},
 		    {'hrsh7th/cmp-nvim-lua'},
+		    {'hrsh7th/cmp-nvim-lsp-signature-help'},
 
 		    -- Snippets
 		    {'L3MON4D3/LuaSnip'},
@@ -62,18 +63,25 @@ return require('packer').startup(function(use)
 	    }
 
     }
-		use { "anuvyklack/windows.nvim",
-		requires = {
-			"anuvyklack/middleclass",
-			"anuvyklack/animation.nvim"
-		},
-		config = function()
-			vim.o.winwidth = 10
-			vim.o.winminwidth = 10
-			vim.o.equalalways = false
-			require('windows').setup()
-		end
-	}
+    use {
+        'lewis6991/gitsigns.nvim',
+        -- tag = 'release' -- To use the latest release (do not use this if you run Neovim nightly or dev builds!)
+        config = function()
+            require('gitsigns').setup()
+        end
+    }
+    use { "anuvyklack/windows.nvim",
+    requires = {
+        "anuvyklack/middleclass",
+        "anuvyklack/animation.nvim"
+    },
+    config = function()
+        vim.o.winwidth = 10
+        vim.o.winminwidth = 10
+        vim.o.equalalways = false
+        require('windows').setup()
+    end
+}
 	use {
 		'nvim-tree/nvim-tree.lua',
 		requires = {
@@ -108,6 +116,7 @@ return require('packer').startup(function(use)
             require('Comment').setup()
         end
     }
+	use {'ggandor/leap.nvim', requires = 'tpope/vim-repeat', }
 
 
 end)
