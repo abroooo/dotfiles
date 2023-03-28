@@ -13,7 +13,25 @@ lsp.ensure_installed({
 })
 
 
-
+-- }}}
+lsp.configure('clangd', {
+    capabilities = capabilities,
+    cmd = {
+        "clangd",
+        "--background-index",
+        "--clang-tidy",
+        "--header-insertion=iwyu",
+        "--completion-style=detailed",
+        "--function-arg-placeholders"
+    },
+    init_options = {
+        usePlaceholders = true,
+        completeUnimported = true,
+        clangdFileStatus = true
+    },
+    on_attach = on_attach,
+    flags = {debounce_text_changes = 150}
+})
 
 require'cmp'.setup {
   sources = {
@@ -35,8 +53,8 @@ cmp_mappings['<S-Tab>'] = nil
 
 lsp.setup_nvim_cmp({
   mapping = cmp_mappings,
-  sources = {
-    { name = 'nvim_lsp_signature_help' }}
+  -- sources = {
+  --   { name = 'nvim_lsp_signature_help' }}
 })
 
 lsp.set_preferences({
