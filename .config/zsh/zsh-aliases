@@ -117,3 +117,6 @@ rga-fzf() {
 function dp(){
     scp $1 admin@10.11.48.179:/data/app
 }
+gm(){
+    yt-dlp -f "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best" $1 --write-info-json
+}
