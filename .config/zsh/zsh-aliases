@@ -113,3 +113,7 @@ rga-fzf() {
 	echo "opening $file" &&
 	xdg-open "$file"
 }
+
+function dp(){
+    scp $1 admin@10.11.48.179:/data/app
+}
