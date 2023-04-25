@@ -64,6 +64,7 @@ return require('packer').startup(function(use)
 
     }
     use {'simrat39/rust-tools.nvim'}
+    use {'tpope/vim-fugitive'}
     use {
         'lewis6991/gitsigns.nvim',
         -- tag = 'release' -- To use the latest release (do not use this if you run Neovim nightly or dev builds!)
@@ -125,8 +126,8 @@ return require('packer').startup(function(use)
             require('neorg').setup {
                 load = {
                     ["core.defaults"] = {}, -- Loads default behaviour
-                    ["core.norg.concealer"] = {}, -- Adds pretty icons to your documents
-                    ["core.norg.dirman"] = { -- Manages Neorg workspaces
+                    ["core.concealer"] = {}, -- Adds pretty icons to your documents
+                    ["core.dirman"] = { -- Manages Neorg workspaces
                     config = {
                         workspaces = {
                             notes = "~/notes",
