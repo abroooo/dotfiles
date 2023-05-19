@@ -6,6 +6,21 @@ set $mod Mod1
 #Default Font
 font xft:URWGothic-Book 11
 
+# colors
+for_window [class = "kitty"] border pixel 5
+
+# class                 border  bground text    indicator child_border
+# client.focused          #000000 #000000 #F8F8F2 #6272A4   #6272A4
+# client.focused_inactive #000000 #000000 #F8F8F2 #44475A   #44475A
+# client.unfocused        #000000 #000000 #BFBFBF #282A36   #282A36
+# client.urgent           #000000 #000000 #F8F8F2 #FF5555   #FF5555
+# client.placeholder      #000000 #000000 #F8F8F2 #282A36   #282A36
+#
+# client.background       #F8F8F2
+# client.focused #000000 #000000 #000000 #000000 #000000
+# client.focused_workspace  #000000 #000000 #000000 #000000 #000000
+# client.focused_workspace  #F9FAF9 #16a085 #292F34
+
 set $transparent #0000006f
 
 set $up k
@@ -311,7 +326,18 @@ mode "$mode_gaps_outer" {
         bindsym Return mode "default"
         bindsym Escape mode "default"
 }
-exec_always --no-startup-id ~/.local/bin/autotiling
+#exec_always --no-startup-id ~/.local/bin/autotiling
 exec export ZDOTDIR=$HOME/.config/zsh
 exec --no-startup-id ~/.config/polybar/launch.sh &
 exec_always --no-startup-id nitrogen --restore
+
+ # exec --no-startup-id  $HOME/.config/i3/i3-master-stack/i3_master
+ # # swap to master node
+ # bindsym $mod+m nop swap master 
+ # # go to master node
+ # bindsym $mod+shift+m nop go master 
+ # # enable/disable master layout in current workspace
+ # bindsym $mod+alt+m nop master toggle 
+ #
+exec_always --no-startup-id $HOME/.config/i3/i3-master-layout.py -s
+bindsym $mod+m exec --no-startup-id $HOME/.config/i3/i3-swap-master.py

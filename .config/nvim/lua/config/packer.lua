@@ -7,6 +7,7 @@ return require('packer').startup(function(use)
   -- Packer can manage itself
     use 'wbthomason/packer.nvim'
 
+    use {'norcalli/nvim-colorizer.lua'}
     use {
 	    'nvim-telescope/telescope.nvim', tag = '0.1.0',
 	    -- or                            , branch = '0.1.x',
@@ -120,6 +121,7 @@ return require('packer').startup(function(use)
     }
 	use {'ggandor/leap.nvim', requires = 'tpope/vim-repeat', }
 
+-- <<<<<<< Updated upstream
     use {
         "nvim-neorg/neorg",
         config = function()
@@ -140,6 +142,28 @@ return require('packer').startup(function(use)
     run = ":Neorg sync-parsers",
     requires = "nvim-lua/plenary.nvim",
     }
+-- =======
+--     use {
+--         "nvim-neorg/neorg",
+--         config = function()
+--             require('neorg').setup {
+--                 load = {
+--                     ["core.defaults"] = {}, -- Loads default behaviour
+--                     ["core.norg.concealer"] = {}, -- Adds pretty icons to your documents
+--                     ["core.norg.dirman"] = { -- Manages Neorg workspaces
+--                     config = {
+--                         workspaces = {
+--                             notes = "~/notes",
+--                         },
+--                     },
+--                 },
+--             },
+--         }
+--     end,
+--     run = ":Neorg sync-parsers",
+--     requires = "nvim-lua/plenary.nvim",
+--     }
+-- >>>>>>> Stashed changes
     use {
         'nvim-lualine/lualine.nvim',
         requires = { 'nvim-tree/nvim-web-devicons', opt = true }
