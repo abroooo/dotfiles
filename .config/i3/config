@@ -284,7 +284,7 @@ bindsym XF86AudioPrev exec playerctl previous
 #for_window [class="^.*"] border pixel 0
 
 #Gaps config
-smart_gaps on
+# smart_gaps on
 gaps inner 14
 gaps outer -2
 
@@ -340,6 +340,8 @@ exec_always --no-startup-id nitrogen --restore
  # bindsym $mod+alt+m nop master toggle 
  #
 exec_always --no-startup-id $HOME/.config/i3/i3-master-layout.py -s
+# on widescreens don't make a single window full width and center it
+exec_always --no-startup-id $HOME/.config/script/singleWindowCenterPy
 bindsym $mod+m exec --no-startup-id $HOME/.config/i3/i3-swap-master.py
 
 # https://www.oribarbut.com/posts/software/i3wm-switch-to-or-launch-shortcut

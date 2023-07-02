@@ -1,0 +1,26 @@
+#!/usr/bin/env python3
+
+import i3ipc
+
+def adjust_gaps(connection, e):
+    num_windows = len(connection.get_tree().find_focused().workspace().leaves())
+
+    # print("numner of win:",num_windows)
+    if num_windows == 1:
+        screen_width = connection.get_outputs()[0].rect.width
+        if screen_width > 1920:
+            print('set outer')
+            cmd = 'gaps horizontal current set ' + str(round(screen_width/4,0))
+            connection.command(cmd)
+    else:
+        # reset gaps
+        # TODO: make it dynamic, save the old values and reset to saved values
+        connection.command('gaps inner current set 14')
+        connection.command('gaps outer current set -2')
+
+connection = i3ipc.Connection()
+
+# Subscribe to window events
+connection.on(i3ipc.Event.WINDOW_FOCUS, adjust_gaps)
+connection.main()
+
