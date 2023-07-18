@@ -64,6 +64,9 @@ return require('packer').startup(function(use)
 	    }
 
     }
+    use {'folke/trouble.nvim',
+    requires = { 'nvim-tree/nvim-web-devicons'}
+    }
     use {'simrat39/rust-tools.nvim'}
     use {'tpope/vim-fugitive'}
     use {
