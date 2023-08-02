@@ -41,6 +41,7 @@ return require('packer').startup(function(use)
         end
     }
 
+    use 'simrat39/symbols-outline.nvim'
     use {
 	    'VonHeikemen/lsp-zero.nvim',
 	    requires = {
