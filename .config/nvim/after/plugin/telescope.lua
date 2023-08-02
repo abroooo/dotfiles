@@ -8,3 +8,7 @@ vim.keymap.set('n', '<C-a>', builtin.live_grep, {})
 vim.keymap.set('n', ';', builtin.buffers, {})
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
 vim.keymap.set('n', '<leader>f;', ':lua require\'telescope.builtin\'.current_buffer_fuzzy_find()<CR>', {})
+
+-- start telescope live-grep and auto-fillin current word selection
+local default_opts = {noremap = true, silent = true}
+vim.keymap.set('v', '<C-q>', 'y<ESC>:Telescope live_grep default_text=<c-r>0<CR>', default_opts)
