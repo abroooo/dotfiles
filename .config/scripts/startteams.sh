@@ -1,0 +1,3 @@
+#!/bin/bash
+
+flatpak run com.github.IsmaelMartinez.teams_for_linux --user &
