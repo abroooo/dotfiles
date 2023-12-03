@@ -103,4 +103,5 @@ export PATH
 
 export ZDOTDIR=$HOME/.config/zsh
 source $HOME/.nix-profile/etc/profile.d/nix.sh
+eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
