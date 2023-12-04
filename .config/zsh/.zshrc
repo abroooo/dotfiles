@@ -102,6 +102,7 @@ export PATH
 # setxkbmap -option caps:swapescape
 
 export ZDOTDIR=$HOME/.config/zsh
+eval "$(zoxide init zsh)"
 source $HOME/.nix-profile/etc/profile.d/nix.sh
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
