@@ -1,8 +1,13 @@
-local lsp = require("lsp-zero")
+local lsp_zero = require("lsp-zero")
 
-lsp.preset("recommended")
+lsp_zero.preset("recommended")
 
-lsp.ensure_installed({
+
+require('mason').setup({})
+require('mason-lspconfig').setup({
+    -- Replace the language servers listed here 
+    -- with the ones you want to install
+    ensure_installed = {
 	'tsserver',
 	'eslint',
 	'lua_ls',
@@ -10,8 +15,11 @@ lsp.ensure_installed({
 	'clangd',
 	'pyright',
     'bashls',
+},
+    handlers = {
+        lsp_zero.default_setup,
+    },
 })
-
 
 
 require'cmp'.setup {
@@ -23,7 +31,7 @@ require'cmp'.setup {
 }
 local cmp = require('cmp')
 local cmp_select = {behavior = cmp.SelectBehavior.Select}
-local cmp_mappings = lsp.defaults.cmp_mappings({
+local cmp_mappings = lsp_zero.defaults.cmp_mappings({
   ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
   ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
   ['<C-y>'] = cmp.mapping.confirm({ select = true }),
@@ -34,13 +42,13 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
 cmp_mappings['<Tab>'] = nil
 cmp_mappings['<S-Tab>'] = nil
 
-lsp.setup_nvim_cmp({
+lsp_zero.setup_nvim_cmp({
   mapping = cmp_mappings,
   -- sources = {
   --   { name = 'nvim_lsp_signature_help' }}
 })
 
-lsp.set_preferences({
+lsp_zero.set_preferences({
     suggest_lsp_servers = false,
     sign_icons = {
         error = 'E',
@@ -50,7 +58,12 @@ lsp.set_preferences({
     }
 })
 
-lsp.on_attach(function(client, bufnr)
+-- lsp_zero.on_attach(function(client, bufnr)
+--     -- see :help lsp-zero-keybindings
+--     -- to learn the available actions
+--     lsp_zero.default_keymaps({buffer = bufnr})
+-- end)
+lsp_zero.on_attach(function(client, bufnr)
   local opts = {buffer = bufnr, remap = false}
 
   if client.name == "eslint" then
@@ -72,7 +85,7 @@ lsp.on_attach(function(client, bufnr)
 end)
 
 -- }}}
-lsp.configure('clangd', {
+lsp_zero.configure('clangd', {
     capabilities = capabilities,
     cmd = {
         "clangd",
@@ -90,7 +103,7 @@ lsp.configure('clangd', {
     on_attach = on_attach,
     flags = {debounce_text_changes = 150}
 })
-lsp.setup()
+lsp_zero.setup()
 
 vim.diagnostic.config({
     virtual_text = true,
