@@ -24,6 +24,7 @@ return require('packer').startup(function(use)
 
     use ( 'nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'} )
     use ( 'nvim-treesitter/playground')
+    use ( 'aliou/bats.vim')
     use ( 'theprimeagen/harpoon')
     use ( 'mbbill/undotree')
 	use {"akinsho/toggleterm.nvim", tag = '*', config = function()
