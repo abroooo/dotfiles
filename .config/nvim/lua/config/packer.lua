@@ -72,6 +72,7 @@ return require('packer').startup(function(use)
     use {'simrat39/rust-tools.nvim'}
     use {'tpope/vim-fugitive'}
     use "sindrets/diffview.nvim"
+    use "ThePrimeagen/git-worktree.nvim"
     use {
         'lewis6991/gitsigns.nvim',
         -- tag = 'release' -- To use the latest release (do not use this if you run Neovim nightly or dev builds!)
