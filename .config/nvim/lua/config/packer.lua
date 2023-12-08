@@ -21,6 +21,7 @@ return require('packer').startup(function(use)
 	    end
     })
     use ( 'folke/tokyonight.nvim' )
+    use { "folke/twilight.nvim"}
 
     use ( 'nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'} )
     use ( 'nvim-treesitter/playground')
