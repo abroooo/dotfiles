@@ -39,3 +39,5 @@ vim.opt.ruler = true
 -- vim.opt.backspace=indent,eol,start -- allow backspacing over everything in insert mode
 vim.opt.cursorline = true
 vim.notify = require("notify")
+-- vim.api.nvim_set_keymap('n', ':', '<cmd>FineCmdline<CR>', {noremap = true})
+vim.api.nvim_set_keymap('n', '<CR>', '<cmd>FineCmdline<CR>', {noremap = true})
