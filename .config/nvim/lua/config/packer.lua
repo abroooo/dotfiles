@@ -175,5 +175,6 @@ return require('packer').startup(function(use)
         requires = { 'nvim-tree/nvim-web-devicons', opt = true }
     }
     use { "alexghergh/nvim-tmux-navigation" }
+    use {'rcarriga/nvim-notify'}
 
 end)

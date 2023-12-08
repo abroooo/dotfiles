@@ -38,3 +38,4 @@ vim.opt.laststatus = 3 -- statusbar 3: always and ONLY the last window
 vim.opt.ruler = true
 -- vim.opt.backspace=indent,eol,start -- allow backspacing over everything in insert mode
 vim.opt.cursorline = true
+vim.notify = require("notify")
