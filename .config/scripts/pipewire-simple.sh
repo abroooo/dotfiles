@@ -12,6 +12,12 @@ getDefaultSource() {
     echo "${description}"
 }
 
+# if pamixer is not available
+if ! command -v pamixer &> /dev/null
+then
+    echo "---"
+fi
+
 VOLUME=$(pamixer --get-volume-human)
 SINK=$(getDefaultSink)
 SOURCE=$(getDefaultSource)
