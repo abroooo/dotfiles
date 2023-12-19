@@ -1,11 +1,19 @@
 #!/bin/sh
+check_and_alias() {
+  if command -v "$1" >/dev/null 2>&1; then
+    alias "$2"="$1"
+    # echo "Alias created: $2 -> $1"
+  fi
+}
+
 alias j='z'
 alias f='zi'
 alias g='lazygit'
 alias zsh-update-plugins="find "$ZDOTDIR/plugins" -type d -exec test -e '{}/.git' ';' -print0 | xargs -I {} -0 git -C {} pull -q"
 alias nvimrc='nvim ~/.config/nvim/'
 alias ll='exa -lah'
-alias cd='z'
+ # alias cd='z'
+check_and_alias z cd
 
 
 # alias lvim='nvim -u ~/.local/share/lunarvim/lvim/init.lua --cmd "set runtimepath+=~/.local/share/lunarvim/lvim"'
