@@ -32,6 +32,7 @@ autoload -Uz colors && colors
 
 # Useful Functions
 source "$ZDOTDIR/zsh-functions"
+source_if_exists $HOME/.env.sh
 
 # Normal files to source
 zsh_add_file "zsh-exports"
@@ -105,3 +106,6 @@ export ZDOTDIR=$HOME/.config/zsh
 source $HOME/.nix-profile/etc/profile.d/nix.sh
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
+export PATH=$HOME/.tmux/plugins/t-smart-tmux-session-manager/bin:$PATH
+export LANG=en_US.UTF-8
+

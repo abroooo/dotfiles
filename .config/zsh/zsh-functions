@@ -34,3 +34,11 @@ function zsh_add_completion() {
 function colormap() {
   for i in {0..255}; do print -Pn "%K{$i}  %k%F{$i}${(l:3::0:)i}%f " ${${(M)$((i%6)):#3}:+$'\n'}; done
 }
+
+# thx to  https://github.com/andrew8088/dotfiles/blob/main/zsh/rc.zsh
+source_if_exists () {
+    if test -r "$1"; then
+        source "$1"
+    fi
+}
+
