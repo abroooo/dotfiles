@@ -40,8 +40,10 @@ vim.opt.ruler = true
 vim.opt.cursorline = true
 
 -- only load notify if it's already installed
-if vim.fn.exists(":notify") == 2 then
-  vim.notify = require("notify")
-end
+-- if vim.fn.exists(":notify") == 2 then
+local  notify = require("notify").setup({
+      background_color = "#000000",
+  })
+  vim.notify = notify-- end
 -- vim.api.nvim_set_keymap('n', ':', '<cmd>FineCmdline<CR>', {noremap = true})
-vim.api.nvim_set_keymap('n', '<CR>', '<cmd>FineCmdline<CR>', {noremap = true})
+-- vim.api.nvim_set_keymap('n', '<CR>', '<cmd>FineCmdline<CR>', {noremap = true})

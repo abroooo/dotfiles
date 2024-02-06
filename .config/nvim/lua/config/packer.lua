@@ -85,6 +85,9 @@ return require('packer').startup(function(use)
     }
     use {'simrat39/rust-tools.nvim'}
     use {'tpope/vim-fugitive'}
+    use {'junegunn/gv.vim',
+        requires = { 'tpope/vim-fugitive'}
+    }
     use "sindrets/diffview.nvim"
     use "ThePrimeagen/git-worktree.nvim"
     use {
@@ -191,5 +194,6 @@ return require('packer').startup(function(use)
     }
     use { "alexghergh/nvim-tmux-navigation" }
     use {'rcarriga/nvim-notify'}
+    use { "David-Kunz/gen.nvim" }
 
 end)

@@ -22,13 +22,6 @@ require('mason-lspconfig').setup({
 })
 
 
-require'cmp'.setup {
-  sources = {
-    { name = 'nvim_lsp_signature_help' },
-    { name = 'nvim_lsp' },
-    { name = 'buffer' }
-  }
-}
 local cmp = require('cmp')
 local cmp_select = {behavior = cmp.SelectBehavior.Select}
 local cmp_mappings = lsp_zero.defaults.cmp_mappings({
@@ -42,11 +35,14 @@ local cmp_mappings = lsp_zero.defaults.cmp_mappings({
 cmp_mappings['<Tab>'] = nil
 cmp_mappings['<S-Tab>'] = nil
 
-lsp_zero.setup_nvim_cmp({
-  mapping = cmp_mappings,
-  -- sources = {
-  --   { name = 'nvim_lsp_signature_help' }}
-})
+require'cmp'.setup {
+    mapping = cmp_mappings,
+    sources = {
+        { name = 'nvim_lsp_signature_help' },
+        { name = 'nvim_lsp' },
+        { name = 'buffer' }
+    }
+}
 
 lsp_zero.set_preferences({
     suggest_lsp_servers = false,
