@@ -5,7 +5,7 @@
 # format = """$directory$character"""
 format = '''
 [┌───────────────────>](bold green)
-[│](bold green)$container$directory$rust$package$git_status$c$python$cmake
+[│](bold green)$container$directory$git_state$git_status$git_commit$git_branch$rust$package$c$python$cmake
 [└─>](bold green) '''
 palette = "catppuccin_mocha"
 # move the rest of the prompt to the right
