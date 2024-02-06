@@ -2,25 +2,45 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
 # A minimal left prompt
-format = """$directory$character"""
+# format = """$directory$character"""
+format = '''
+[┌───────────────────>](bold green)
+[│](bold green)$container$directory$rust$package$git_status$c$python$cmake
+[└─>](bold green) '''
 palette = "catppuccin_mocha"
 # move the rest of the prompt to the right
-right_format = """$all"""
+# right_format = """$all"""
+right_format = """"""
 
 # Inserts a blank line between shell prompts
 add_newline = false
 
+[container]
+format = '[$symbol $name](bold green) '
+
 [directory]
 truncation_length = 2
-home_symbol = '🚀'
+home_symbol = '󱓟'
 
 # Replace the "❯" symbol in the prompt with "➜"
-[character] # The name of the module we are configuring is "character"
-success_symbol = "[➜](bold green)" # The "success_symbol" segment is being set to "➜" with the color "bold green"
+# [character] # The name of the module we are configuring is "character"
+# success_symbol = "[➜](bold green)" # The "success_symbol" segment is being set to "➜" with the color "bold green"
 
 # Disable the package module, hiding it from the prompt completely
 [package]
 disabled = true
+
+[c]
+format = 'via [$name $version]($style)'
+detect_extensions = ['c', 'h', 'hpp', 'cpp']
+commands = [ 'clang++-14', '--version' ]
+symbol = 'Cpp '
+
+[cmake]
+disabled = false
+
+[python]
+disabled = false
 
 
 [git_status]
@@ -28,13 +48,14 @@ conflicted = "🏳"
 ahead = "🏎💨"
 behind = "😰"
 diverged = "😵"
-up_to_date = "✓"
+up_to_date = "[✓](green)"
 untracked = "🤷"
 stashed = "📦"
 modified = "📝"
 staged = '[++\($count\)](green)'
 renamed = "👅"
 deleted = "🗑"
+format = 	'([$all_status$ahead_behind]($style) )'
 
 
 [git_metrics]
