@@ -15,6 +15,7 @@ require('mason-lspconfig').setup({
 	'clangd',
 	'pyright',
     'bashls',
+    'marksman',
 },
     handlers = {
         lsp_zero.default_setup,
