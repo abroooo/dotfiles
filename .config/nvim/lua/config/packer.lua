@@ -1,4 +1,5 @@
 -- This file can be loaded by calling `lua require('plugins')` from your init.vim
+-- print("hello form packer config")
 
  -- Only required if you have packer configured as `opt`
 vim.cmd [[packadd packer.nvim]]
@@ -24,9 +25,17 @@ return require('packer').startup(function(use)
     use { "catppuccin/nvim", as = "catppuccin" }
     use { "folke/twilight.nvim"}
 
-    use ( 'nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'} )
+    use ( 'sunaku/tmux-navigate' )
+    use {
+        'nvim-treesitter/nvim-treesitter',
+        run = function()
+            local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
+            ts_update()
+        end,
+    }
     use ( 'nvim-treesitter/playground')
     use ( 'nvim-treesitter/nvim-treesitter-context')
+    use ( 'stsewd/tree-sitter-comment')
     use ( 'aliou/bats.vim')
     use ( 'theprimeagen/harpoon')
     use ( 'mbbill/undotree')
@@ -52,6 +61,28 @@ return require('packer').startup(function(use)
     }
 
     use 'simrat39/symbols-outline.nvim'
+    use({
+        "epwalsh/obsidian.nvim",
+        tag = "*",  -- recommended, use latest release instead of latest commit
+        requires = {
+            -- Required.
+            "nvim-lua/plenary.nvim",
+
+            -- see below for full list of optional dependencies 👇
+        },
+        config = function()
+            require("obsidian").setup({
+                workspaces = {
+                    {
+                        name = "personal",
+                        path = "~/git/personal_notes2.wiki_logseq",
+                    },
+                },
+
+                -- see below for full list of options 👇
+            })
+        end,
+    })
     use {
 	    'VonHeikemen/lsp-zero.nvim',
 	    requires = {
@@ -145,28 +176,6 @@ return require('packer').startup(function(use)
     }
 	use {'ggandor/leap.nvim', requires = 'tpope/vim-repeat', }
 
--- <<<<<<< Updated upstream
-    use {
-        "nvim-neorg/neorg",
-        config = function()
-            require('neorg').setup {
-                load = {
-                    ["core.defaults"] = {}, -- Loads default behaviour
-                    ["core.concealer"] = {}, -- Adds pretty icons to your documents
-                    ["core.dirman"] = { -- Manages Neorg workspaces
-                    config = {
-                        workspaces = {
-                            notes = "~/notes",
-                        },
-                    },
-                },
-            },
-        }
-    end,
-    run = ":Neorg sync-parsers",
-    requires = "nvim-lua/plenary.nvim",
-    }
--- =======
 --     use {
 --         "nvim-neorg/neorg",
 --         config = function()
@@ -187,7 +196,6 @@ return require('packer').startup(function(use)
 --     run = ":Neorg sync-parsers",
 --     requires = "nvim-lua/plenary.nvim",
 --     }
--- >>>>>>> Stashed changes
     use {
         'nvim-lualine/lualine.nvim',
         requires = { 'nvim-tree/nvim-web-devicons', opt = true }
@@ -195,5 +203,27 @@ return require('packer').startup(function(use)
     use { "alexghergh/nvim-tmux-navigation" }
     use {'rcarriga/nvim-notify'}
     use { "David-Kunz/gen.nvim" }
+    use {
+        'cameron-wags/rainbow_csv.nvim',
+        config = function()
+            require 'rainbow_csv'.setup()
+        end,
+        -- optional lazy-loading below
+        module = {
+            'rainbow_csv',
+            'rainbow_csv.fns'
+        },
+        ft = {
+            'csv',
+            'tsv',
+            'csv_semicolon',
+            'csv_whitespace',
+            'csv_pipe',
+            'rfc_csv',
+            'rfc_semicolon'
+        }
+    }
+    -- sadads https://github.com/nvim-treesitter/nvim-treesitter/wiki/Installation sadad
+    --
 
 end)

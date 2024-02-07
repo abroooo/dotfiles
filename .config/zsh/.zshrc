@@ -96,6 +96,7 @@ export QT_QPA_PLATFORMTHEME=qt5ct
 
 # Add scripts to path
 path+=("$HOME/.config/scripts")
+path+=$HOME/.tmux/plugins/t-smart-tmux-session-manager/bin:$PATH
 export PATH
 # remap caps to escape
 # setxkbmap -option caps:escape
