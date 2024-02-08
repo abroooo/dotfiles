@@ -130,9 +130,15 @@ gm(){
     yt-dlp -f "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best" $1 --write-info-json
 }
 gcd(){
-git commit -m '$1 \
+git commit -m "$1 \
     \
-Refs: PRG-9999'
+Refs: PRG-9999"
+}
+
+gcg(){
+git commit -m "$1 
+    
+Refs: $2"
 }
 
 # git log show with fzf
