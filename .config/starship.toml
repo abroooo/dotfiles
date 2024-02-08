@@ -33,7 +33,7 @@ disabled = true
 [c]
 format = 'via [$name $version]($style)'
 detect_extensions = ['c', 'h', 'hpp', 'cpp']
-commands = [ 'clang++-14', '--version' ]
+commands = [[ 'clang++-14', '--version' ]]
 symbol = 'Cpp '
 
 [cmake]
