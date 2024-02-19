@@ -7,7 +7,7 @@ require("git-worktree").setup()
 --     -- autopush = <boolean> -- default: false,
 -- })
 require("telescope").load_extension("git_worktree")
-vim.keymap.set("n", "sf","<CMD>lua require('telescope').extensions.git_worktree.git_worktrees()<CR>", {})
+vim.keymap.set("n", "<leader>sf","<CMD>lua require('telescope').extensions.git_worktree.git_worktrees()<CR>", {})
 -- vim.keymap.set("n", "ws","<CMD>lua require('telescope').extensions.git_worktree.git_worktrees()<CR>", {})
-vim.keymap.set("n", "wa","<CMD>lua require('telescope').extensions.git_worktree.create_git_worktree()<CR>", {})
+vim.keymap.set("n", "<leader>wa","<CMD>lua require('telescope').extensions.git_worktree.create_git_worktree()<CR>", {})
 
