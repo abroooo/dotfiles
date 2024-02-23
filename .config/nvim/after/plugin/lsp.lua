@@ -41,9 +41,31 @@ require'cmp'.setup {
     sources = {
         { name = 'nvim_lsp_signature_help' },
         { name = 'nvim_lsp' },
+        { name = 'cmdline' },
         { name = 'buffer' }
     }
 }
+
+cmp.setup.cmdline('/', {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = {
+        { name = 'buffer' }
+    }
+})
+
+cmp.setup.cmdline(':', {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = cmp.config.sources({
+        { name = 'path' }
+    }, {
+        {
+            name = 'cmdline',
+            option = {
+                ignore_cmds = { 'Man', '!' }
+            }
+        }
+    })
+})
 
 lsp_zero.set_preferences({
     suggest_lsp_servers = false,
