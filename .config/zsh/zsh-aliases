@@ -11,7 +11,8 @@ alias f='zi'
 alias g='lazygit'
 alias zsh-update-plugins="find "$ZDOTDIR/plugins" -type d -exec test -e '{}/.git' ';' -print0 | xargs -I {} -0 git -C {} pull -q"
 alias nvimrc='nvim ~/.config/nvim/'
-alias ll='exa -lah'
+alias ll='eza -lah'
+alias lt='eza -lahT'
  # alias cd='z'
 check_and_alias z cd
 
