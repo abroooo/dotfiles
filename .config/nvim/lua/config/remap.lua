@@ -2,6 +2,8 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = "/"
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 
+-- easy exit insert mode 
+vim.api.nvim_set_keymap("i", "jj", "<Esc>", {noremap=false})
 
 -- easy buffer switching
 vim.keymap.set("n", "<Tab>", vim.cmd.bnext)

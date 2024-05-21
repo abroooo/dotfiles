@@ -75,7 +75,7 @@ return require('packer').startup(function(use)
                 workspaces = {
                     {
                         name = "personal",
-                        path = "~/git/personal_notes2.wiki_logseq",
+                        path = "/home/alex/git/notes",
                     },
                 },
 
