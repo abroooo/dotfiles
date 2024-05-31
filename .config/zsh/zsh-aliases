@@ -68,6 +68,26 @@ alias m="git checkout master"
 alias s="git checkout stable"
 alias gs="git status"
 alias gan="git commit --amend --no-edit"
+function swbuild(){
+  worktree=$(
+  git worktree list | fzf-tmux \
+    --prompt="Switch Worktree: " \
+    --height 40% --reverse |
+    awk '{print $1}'
+  )
+
+  cd "$worktree"/build && rm -rf $(git rev-parse --show-toplevel)/build/* && echo "BUILDING $worktree:" && conan build .. --profile=$CONAN_PROFILE -s build_type=Debug --profile:build=$CONAN_PROFILE
+}
+function swtree(){
+  worktree=$(
+  git worktree list | fzf \
+    --prompt="Switch Worktree: " \
+    --height 40% --reverse |
+    awk '{print $1}'
+  )
+
+  cd "$worktree" || return
+}
 
 case "$(uname -s)" in
 

@@ -108,3 +108,7 @@ git-fuzzy-log ()
 		--preview "${PREVIEW_COMMAND}" --preview-window=top:15 \
 		--bind "enter:execute:${ENTER_COMMAND}"
 }
+
+mdless(){
+    glow "$@" -s dark | less -r
+}

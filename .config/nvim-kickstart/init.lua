@@ -537,6 +537,9 @@ require('lazy').setup({
         builtin.find_files { cwd = vim.fn.stdpath 'config' }
       end, { desc = '[S]earch [N]eovim files' })
       vim.keymap.set('n', '<leader>so', function()
+        builtin.find_files { cwd = '~/dotfiles' }
+      end, { desc = '[S]earch d[O]t files' })
+      vim.keymap.set('n', '<leader>so', function()
         builtin.find_files { cwd = '~/dotfiles', hidden = true }
       end, { desc = '[S]earch D[O]tfiles' })
     end,
@@ -953,6 +956,17 @@ require('lazy').setup({
 
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
+  {
+    'nvim-tree/nvim-tree.lua',
+    version = '*',
+    lazy = false,
+    dependencies = {
+      'nvim-tree/nvim-web-devicons',
+    },
+    config = function()
+      require('nvim-tree').setup {}
+    end,
+  },
 
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
@@ -1167,6 +1181,8 @@ vim.keymap.set('n', '<leader>od', function()
 end, { desc = '[O]bisian Today' })
 
 vim.api.nvim_set_keymap('n', '<leader>nnn', ':ObsidianToday<CR>', { silent = true, noremap = true })
+vim.keymap.set('n', '<leader>os', ':ObsidianQuickSwitch<CR>', { desc = '[O]bsidian file search', silent = true, noremap = true })
+vim.keymap.set('n', '<leader>og', ':ObsidianSearch<CR>', { desc = '[O]bsidian file grep', silent = true, noremap = true })
 vim.keymap.set({ 'n', 'v' }, '<leader>y', '"+y', { desc = 'Yank to clipboard', silent = true, noremap = true })
 vim.keymap.set({ 'n', 'v' }, '<leader>yy', '"+Y', { desc = 'Yank line to clipboard', silent = true, noremap = true })
 vim.keymap.set('i', 'jj', '<esc>')
