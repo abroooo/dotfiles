@@ -299,6 +299,7 @@ require('lazy').setup({
   { 'numToStr/Comment.nvim', opts = {} },
   { 'folke/twilight.nvim' },
   { 'aliou/bats.vim' },
+  { 'f-person/git-blame.nvim' },
   { 'theprimeagen/harpoon' },
   {
     'folke/trouble.nvim',
@@ -1029,6 +1030,18 @@ require('lazy').setup({
   { 'mbbill/undotree' },
   { 'rockerBOO/symbols-outline.nvim' },
   {
+    'NeogitOrg/neogit',
+    dependencies = {
+      'nvim-lua/plenary.nvim', -- required
+      'sindrets/diffview.nvim', -- optional - Diff integration
+
+      -- Only one of these is needed, not both.
+      'nvim-telescope/telescope.nvim', -- optional
+      'ibhagwan/fzf-lua', -- optional
+    },
+    config = true,
+  },
+  {
     'ThePrimeagen/git-worktree.nvim',
     dependencies = { 'plenary.nvim', 'telescope.nvim' },
   },
@@ -1184,6 +1197,9 @@ end, { desc = '[O]bisian Today' })
 vim.api.nvim_set_keymap('n', '<leader>nnn', ':ObsidianToday<CR>', { silent = true, noremap = true })
 vim.keymap.set('n', '<leader>os', ':ObsidianQuickSwitch<CR>', { desc = '[O]bsidian file search', silent = true, noremap = true })
 vim.keymap.set('n', '<leader>og', ':ObsidianSearch<CR>', { desc = '[O]bsidian file grep', silent = true, noremap = true })
+vim.keymap.set('n', '<leader>tc', ':tabclose<CR>', { desc = '[T]ab close', silent = true, noremap = true })
+vim.keymap.set('n', '<leader>dm', ':DiffviewOpen  --diffthis master<CR>', { desc = '[D]iffview master', silent = true, noremap = true })
+vim.keymap.set('n', '<leader>nl', ':Neogit log<CR>', { desc = '[N]eogit log', silent = true, noremap = true })
 vim.keymap.set({ 'n', 'v' }, '<leader>y', '"+y', { desc = 'Yank to clipboard', silent = true, noremap = true })
 vim.keymap.set({ 'n', 'v' }, '<leader>yy', '"+Y', { desc = 'Yank line to clipboard', silent = true, noremap = true })
 vim.keymap.set('i', 'jj', '<esc>')
