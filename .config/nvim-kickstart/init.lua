@@ -764,7 +764,7 @@ require('lazy').setup({
       workspaces = {
         {
           name = 'personal',
-          path = '~/git/notes',
+          path = vim.env.NOTES,
         },
       },
       picker = {
