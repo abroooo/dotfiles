@@ -297,7 +297,16 @@ require('lazy').setup({
 
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
+  { 'preservim/vim-pencil' },
   { 'folke/twilight.nvim' },
+  {
+    'folke/zen-mode.nvim',
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    },
+  },
   { 'aliou/bats.vim' },
   { 'f-person/git-blame.nvim' },
   { 'theprimeagen/harpoon' },
