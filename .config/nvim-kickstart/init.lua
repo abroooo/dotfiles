@@ -789,6 +789,12 @@ require('lazy').setup({
           insert_link = '<C-l>',
         },
       },
+      -- new notes should always go to inbox. From there I'll manually move them
+      notes_subdir = '0_inbox',
+      -- Where to put new notes. Valid options are
+      --  * "current_dir" - put new notes in same directory as the current buffer.
+      --  * "notes_subdir" - put new notes in the default notes subdirectory.
+      new_notes_location = 'notes_subdir',
       -- Optional, boolean or a function that takes a filename and returns a boolean.
       -- `true` indicates that you don't want obsidian.nvim to manage frontmatter.
       disable_frontmatter = true,
@@ -809,6 +815,13 @@ require('lazy').setup({
         -- Optional, if you want to automatically insert a template from your template directory like 'daily.md'
         template = nil,
       },
+      -- customize how note file names are generated given the ID, target directory, and title.
+      ---@param spec { id: string, dir: obsidian.Path, title: string|? }
+      ---@return string|obsidian.Path The full path to the new note.
+      note_path_func = function(spec)
+        local path = spec.dir / tostring(spec.title)
+        return path:with_suffix '.md'
+      end,
 
       -- see below for full list of options 👇
     },
@@ -1205,6 +1218,7 @@ end, { desc = '[O]bisian Today' })
 
 vim.api.nvim_set_keymap('n', '<leader>nnn', ':ObsidianToday<CR>', { silent = true, noremap = true })
 vim.keymap.set('n', '<leader>os', ':ObsidianQuickSwitch<CR>', { desc = '[O]bsidian file search', silent = true, noremap = true })
+vim.keymap.set('n', '<leader>on', ':ObsidianNew<CR>', { desc = '[O]bsidian new note', silent = true, noremap = true })
 vim.keymap.set('n', '<leader>og', ':ObsidianSearch<CR>', { desc = '[O]bsidian file grep', silent = true, noremap = true })
 vim.keymap.set('n', '<leader>tc', ':tabclose<CR>', { desc = '[T]ab close', silent = true, noremap = true })
 vim.keymap.set('n', '<leader>dm', ':DiffviewOpen  --diffthis master<CR>', { desc = '[D]iffview master', silent = true, noremap = true })
