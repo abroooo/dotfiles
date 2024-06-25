@@ -1220,6 +1220,22 @@ end
 -- require('obsidian').commands.new_note 'Newsletter-Issue'
 -- require('obsidian').commands.today
 
+function NewChore()
+  vim.ui.input({ prompt = 'Enter chore name: ' }, function(input)
+    if input == nil or input == '' then
+      print 'Note creation cancelled'
+      return
+    end
+
+    local sanitized_input = input:gsub('%s+', '_')
+    local fixed_path = '05_chores/' -- Fixed path within the vault
+    local note_name = fixed_path .. sanitized_input
+
+    vim.cmd('ObsidianNew ' .. note_name)
+    vim.cmd 'ObsidianTemplate Note'
+  end)
+end
+
 vim.keymap.set('n', '<leader>od', function()
   test()
 end, { desc = '[O]bisian Today' })
@@ -1227,6 +1243,7 @@ end, { desc = '[O]bisian Today' })
 vim.api.nvim_set_keymap('n', '<leader>nnn', ':ObsidianToday<CR>', { silent = true, noremap = true })
 vim.keymap.set('n', '<leader>os', ':ObsidianQuickSwitch<CR>', { desc = '[O]bsidian file search', silent = true, noremap = true })
 vim.keymap.set('n', '<leader>on', ':ObsidianNew<CR>', { desc = '[O]bsidian new note', silent = true, noremap = true })
+vim.keymap.set('n', '<leader>oc', ':lua NewChore()<CR>', { desc = '[O]bsidian new [c]hore', silent = true, noremap = true })
 vim.keymap.set('n', '<leader>og', ':ObsidianSearch<CR>', { desc = '[O]bsidian file grep', silent = true, noremap = true })
 vim.keymap.set('n', '<leader>tc', ':tabclose<CR>', { desc = '[T]ab close', silent = true, noremap = true })
 vim.keymap.set('n', '<leader>dm', ':DiffviewOpen  --diffthis master<CR>', { desc = '[D]iffview master', silent = true, noremap = true })
