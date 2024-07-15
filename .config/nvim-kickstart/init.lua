@@ -1240,6 +1240,12 @@ vim.keymap.set('n', '<leader>od', function()
   test()
 end, { desc = '[O]bisian Today' })
 
+function Insert_timestamp()
+  local dateFormat = '%Y-%m-%d %H:%M:%S'
+  local datetime = os.date(dateFormat)
+  vim.api.nvim_feedkeys(datetime, 'n', true)
+end
+
 vim.api.nvim_set_keymap('n', '<leader>nnn', ':ObsidianToday<CR>', { silent = true, noremap = true })
 vim.keymap.set('n', '<leader>os', ':ObsidianQuickSwitch<CR>', { desc = '[O]bsidian file search', silent = true, noremap = true })
 vim.keymap.set('n', '<leader>on', ':ObsidianNew<CR>', { desc = '[O]bsidian new note', silent = true, noremap = true })
