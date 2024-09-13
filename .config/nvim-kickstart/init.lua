@@ -1255,6 +1255,50 @@ function Insert_timestamp()
   vim.api.nvim_feedkeys(datetime, 'n', true)
 end
 
+function ShowCheatsheet()
+  local function read_file(file_path)
+    local lines = {}
+    local file = io.open(file_path, 'r')
+    if file then
+      for line in file:lines() do
+        table.insert(lines, line)
+      end
+      file:close()
+    else
+      print('Could not open file: ' .. file_path)
+    end
+    return lines
+  end
+
+  local file_path = vim.env.NOTES_CHEAT_SHEET
+  local cheatsheet = read_file(file_path)
+
+  if #cheatsheet == 0 then
+    cheatsheet = { 'No cheatsheet available!' }
+  end
+
+  local buf = vim.api.nvim_create_buf(false, true) -- Create a scratch buffer
+  vim.api.nvim_buf_set_lines(buf, 0, -1, false, cheatsheet)
+
+  local width = 150
+  local height = 25
+  -- local height = math.min(#cheatsheet + 2, 10) -- Dynamically set height based on file content
+  local opts = {
+    style = 'minimal', -- Minimal style, no borders or extraneous UI
+    relative = 'editor', -- Position relative to the entire editor
+    width = width, -- Width of the window
+    height = height, -- Height of the window
+    row = math.floor((vim.o.lines - height) / 2), -- Center vertically
+    col = math.floor((vim.o.columns - width) / 2), -- Center horizontally
+    border = 'rounded', -- Optional: Add a rounded border around the window
+  }
+
+  local win = vim.api.nvim_open_win(buf, true, opts)
+
+  vim.api.nvim_buf_set_option(buf, 'modifiable', false)
+  vim.api.nvim_buf_set_keymap(buf, 'n', 'q', '<Cmd>bd!<CR>', { noremap = true, silent = true })
+end
+
 vim.api.nvim_set_keymap('i', 'jk', '<ESC>:lua Insert_timestamp()<CR>a', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>nnn', ':ObsidianToday<CR>', { silent = true, noremap = true })
 vim.keymap.set('n', '<leader>os', ':ObsidianQuickSwitch<CR>', { desc = '[O]bsidian file search', silent = true, noremap = true })
@@ -1262,6 +1306,7 @@ vim.keymap.set('n', '<leader>on', ':ObsidianNew<CR>', { desc = '[O]bsidian new n
 vim.keymap.set('n', '<leader>oc', ':lua NewChore()<CR>', { desc = '[O]bsidian new [c]hore', silent = true, noremap = true })
 vim.keymap.set('n', '<leader>og', ':ObsidianSearch<CR>', { desc = '[O]bsidian file grep', silent = true, noremap = true })
 vim.keymap.set('n', '<leader>tc', ':tabclose<CR>', { desc = '[T]ab close', silent = true, noremap = true })
+vim.keymap.set('n', '<leader>oc', ':lua ShowCheatsheet()<CR>', { desc = '[T]ab close', silent = true, noremap = true })
 vim.keymap.set('n', '<leader>dm', ':DiffviewOpen  --diffthis master<CR>', { desc = '[D]iffview master', silent = true, noremap = true })
 vim.keymap.set('n', '<leader>nl', ':Neogit log<CR>', { desc = '[N]eogit log', silent = true, noremap = true })
 vim.keymap.set({ 'n', 'v' }, '<leader>y', '"+y', { desc = 'Yank to clipboard', silent = true, noremap = true })
