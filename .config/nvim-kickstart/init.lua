@@ -315,6 +315,13 @@ require('lazy').setup({
   { 'f-person/git-blame.nvim' },
   { 'theprimeagen/harpoon' },
   {
+    'MeanderingProgrammer/render-markdown.nvim',
+    opts = {},
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+  },
+  {
     'folke/trouble.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     opts = {
@@ -795,6 +802,8 @@ require('lazy').setup({
           insert_link = '<C-l>',
         },
       },
+      -- disable ui because of render-markdown (only one plugin should be used for ui)
+      ui = { enable = false },
       -- new notes should always go to inbox. From there I'll manually move them
       notes_subdir = '0_inbox',
       -- Where to put new notes. Valid options are
