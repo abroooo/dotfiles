@@ -312,6 +312,12 @@ require('lazy').setup({
     },
   },
   { 'aliou/bats.vim' },
+  {
+    'sunaku/tmux-navigate',
+    config = function()
+      vim.g.tmux_navigator_no_mappings = 1 -- Disable default keybindings to avoid conflict with Neovim
+    end,
+  },
   { 'f-person/git-blame.nvim' },
   { 'theprimeagen/harpoon' },
   {
