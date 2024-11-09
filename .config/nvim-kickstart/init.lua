@@ -324,6 +324,20 @@ require('lazy').setup({
     },
   },
   {
+    'echasnovski/mini.indentscope',
+    version = false,
+    config = function()
+      require('mini.indentscope').setup()
+    end,
+  },
+  {
+    'echasnovski/mini.trailspace',
+    version = false,
+    config = function()
+      require('mini.trailspace').setup()
+    end,
+  },
+  {
     'echasnovski/mini.pairs',
     version = false,
     config = function()
