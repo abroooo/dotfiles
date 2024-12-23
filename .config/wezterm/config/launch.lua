@@ -29,7 +29,7 @@ elseif platform.is_linux then
    -- options.default_prog = { 'zsh', '-l', '-c', 'tmux attach || tmux' }
    options.default_prog =
       { 'zsh', '-c', [[
-    tmux attach -t mysession || tmux new -s mysession; zsh
+    (tmux attach -t mysession || tmux new -s mysession); zsh
   ]] }
    options.launch_menu = {
       { label = 'Bash', args = { 'bash', '-l' } },
