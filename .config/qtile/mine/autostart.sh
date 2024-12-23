@@ -22,18 +22,16 @@ setxkbmap eu
 
 # Load picom
 # picom &
-picom & #--backend glx &
+picom --backend glx &
 
 # Load power manager
 xfce4-power-manager &
 
 # Load notification service
 dunst &
-flatpak run md.obsidian.Obsidian &
-flatpak run io.github.tdesktop_x64.TDesktop &
 
 # Launch polybar
-# ~/.config/polybar/launch.sh &
+~/.config/polybar/launch.sh &
 
 # Setup Wallpaper and update colors
 ~/.config/scripts/updatewal.sh &
