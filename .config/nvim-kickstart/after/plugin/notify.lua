@@ -1,4 +1,4 @@
-require('notify').setup ({
--- other stuff
-background_colour = "#000000"
-})
+-- require('notify').setup ({
+-- -- other stuff
+-- background_colour = "#000000"
+-- })
