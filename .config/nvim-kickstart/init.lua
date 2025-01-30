@@ -1071,6 +1071,7 @@ end
 
 vim.api.nvim_set_keymap('i', 'jk', '<ESC>:lua Insert_timestamp()<CR>a', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>nnn', ':ObsidianToday<CR>', { silent = true, noremap = true })
+vim.keymap.set('n', '<leader>qq', ':q<CR>', { desc = '[q][q]uit current window', silent = true, noremap = true })
 vim.keymap.set('n', '<leader>os', ':ObsidianQuickSwitch<CR>', { desc = '[O]bsidian file search', silent = true, noremap = true })
 vim.keymap.set('n', '<leader>on', ':ObsidianNew<CR>', { desc = '[O]bsidian new note', silent = true, noremap = true })
 vim.keymap.set('n', '<leader>oc', ':lua NewChore()<CR>', { desc = '[O]bsidian new [c]hore', silent = true, noremap = true })
