@@ -34,7 +34,24 @@ require('lazy').setup({
       vim.g.tmux_navigator_no_mappings = 1 -- Disable default keybindings to avoid conflict with Neovim
     end,
   },
+  { 'github/copilot.vim' },
+  {
+    'CopilotC-Nvim/CopilotChat.nvim',
+    dependencies = {
+      { 'github/copilot.vim' }, -- or zbirenbaum/copilot.lua
+      { 'nvim-lua/plenary.nvim' }, -- for curl, log wrapper
+    },
+    build = 'make tiktoken', -- Only on MacOS or Linux
+    opts = {
+      -- See Configuration section for options
+    },
+    -- See Commands section for default commands if you want to lazy load on them
+  },
 
+  {
+    'rebelot/kanagawa.nvim',
+  },
+  { 'nvim-treesitter/nvim-treesitter-context' },
   require 'kickstart/plugins/gitsigns',
 
   require 'kickstart/plugins/which-key',

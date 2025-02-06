@@ -30,6 +30,23 @@ vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left wind
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+vim.keymap.set('n', '<C-s>', ':w<CR>', { desc = '[O]bsidian file search', silent = true, noremap = true })
+
+vim.keymap.set('n', '<M-h>', [[<cmd>vertical resize +5<cr>]]) -- make the window biger vertically
+vim.keymap.set('n', '<M-j>', [[<cmd>vertical resize -5<cr>]]) -- make the window smaller vertically
+vim.keymap.set('n', '<M-k>', [[<cmd>horizontal resize +2<cr>]]) -- make the window bigger horizontally by pressing shift and =
+vim.keymap.set('n', '<M-l>', [[<cmd>horizontal resize -2<cr>]]) -- make the window smaller horizontally by pressing shift and -
+-- Moving text
+-- -----------
+-- move selection up/down
+vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv")
+vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv")
+
+vim.keymap.set('i', '<C-j>', '<esc>:m .+1<CR>==a')
+vim.keymap.set('i', '<C-k>', '<esc>:m .-2<CR>==a')
+
+vim.keymap.set('n', '<leader>j', ':m .+1<CR>==')
+vim.keymap.set('n', '<leader>k', ':m .-2<CR>==')
 
 -- Obsidian
 vim.keymap.set('n', '<leader>os', ':ObsidianQuickSwitch<CR>', { desc = '[O]bsidian file search', silent = true, noremap = true })
