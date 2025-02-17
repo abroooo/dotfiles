@@ -34,6 +34,15 @@ require('lazy').setup({
       vim.g.tmux_navigator_no_mappings = 1 -- Disable default keybindings to avoid conflict with Neovim
     end,
   },
+  {
+    '3rd/image.nvim',
+    opts = {},
+  },
+  -- }, 
+  -- {
+  -- rocks = {
+  --   hererocks = true, -- recommended if you do not have global installation of Lua 5.1.
+  -- },
   { 'github/copilot.vim' },
   {
     'CopilotC-Nvim/CopilotChat.nvim',
