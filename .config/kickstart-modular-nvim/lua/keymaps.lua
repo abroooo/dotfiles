@@ -30,7 +30,8 @@ vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left wind
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
-vim.keymap.set('n', '<C-s>', ':w<CR>', { desc = '[O]bsidian file search', silent = true, noremap = true })
+vim.keymap.set('n', '<C-s>', ':w<CR>', { desc = 'Safe current buffer (normal mode)', silent = true, noremap = true })
+vim.keymap.set('i', '<C-s>', '<Esc>:w<CR>', { desc = 'Safe current buffer (insert mode)', silent = true, noremap = true })
 
 vim.keymap.set('n', '<M-h>', [[<cmd>vertical resize +5<cr>]]) -- make the window biger vertically
 vim.keymap.set('n', '<M-j>', [[<cmd>vertical resize -5<cr>]]) -- make the window smaller vertically
