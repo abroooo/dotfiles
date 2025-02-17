@@ -56,6 +56,24 @@ vim.keymap.set('n', '<leader>og', ':ObsidianSearch<CR>', { desc = '[O]bsidian fi
 vim.keymap.set('n', '<leader>od', ':ObsidianToday<CR>', { desc = '[O]bisian To[d]ay' })
 vim.keymap.set('n', '<leader>oz', ':ZenMode | Pencil<CR>', { desc = '[O]bisian To[d]ay' })
 
+-- Copilot
+-- vim.keymap.set('n', '<leader>ct', ':lua vim.g.copilot_enabled = not vim.g.copilot_enabled<CR>', { desc = '[O]bisian To[d]ay' })
+vim.keymap.set('n', '<leader>cs', ':Copilot status<CR>', { desc = '[C]opilot [S]tatus' })
+vim.keymap.set('n', '<leader>ct', function()
+  if vim.g.copilot_enabled then
+    -- vim.cmd 'Copilot disable'
+    print 'Copilot Disabled'
+  else
+    -- vim.cmd 'Copilot enable'
+    print 'Copilot Enabled'
+  end
+  vim.g.copilot_enabled = not vim.g.copilot_enabled
+end, { desc = '[C]opilot [T]oggle' })
+
+-- Diffview
+vim.keymap.set('n', '<leader>dh', ':DiffviewOpen HEAD<CR>', { desc = '[D]bisian [H]EAD' })
+vim.keymap.set('n', '<leader>dc', ':DiffviewClose<CR>', { desc = '[D]iffview[C]lose' })
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
