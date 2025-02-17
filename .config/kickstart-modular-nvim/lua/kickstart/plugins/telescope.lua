@@ -106,6 +106,8 @@ return {
               preview_width = 0.5,
             },
           },
+
+          initial_mode = 'normal',
           path_display = path_display,
           sorting_strategy = 'ascending',
           -- path_display = {
