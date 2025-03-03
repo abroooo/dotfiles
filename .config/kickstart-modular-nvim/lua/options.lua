@@ -39,6 +39,12 @@ vim.opt.signcolumn = 'yes'
 -- Decrease update time
 vim.opt.updatetime = 250
 
+-- keep the cursor centered
+vim.opt.scrolloff = 999
+
+-- Minimal number of screen lines to keep above and below the cursor.
+-- vim.opt.scrolloff = 10
+
 -- Decrease mapped sequence wait time
 vim.opt.timeoutlen = 300
 
@@ -57,9 +63,6 @@ vim.opt.inccommand = 'split'
 
 -- Show which line your cursor is on
 vim.opt.cursorline = true
-
--- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.scrolloff = 10
 
 -- vim: ts=2 sts=2 sw=2 et
 vim.diagnostic.config { virtual_text = true }
