@@ -37,8 +37,12 @@ require('lazy').setup({
   {
     '3rd/image.nvim',
     opts = {},
+    cond = function()
+      -- Check if the `magick` command is available
+      return vim.fn.executable 'magick' == 1
+    end,
   },
-  -- }, 
+  -- },
   -- {
   -- rocks = {
   --   hererocks = true, -- recommended if you do not have global installation of Lua 5.1.
