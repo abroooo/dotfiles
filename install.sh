@@ -43,7 +43,7 @@ function install_debian() {
 }
 
 function install_neovim() {
-  curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.appimage \
+  curl -LO https://github.com/neovim/neovim/releases/download/nightly/nvim-linux-x86_64.appimage \
   && chmod +x nvim-linux-x86_64.appimage && ./nvim-linux-x86_64.appimage --appimage-extract && cp -r squashfs-root/usr ~/.local/ \
   && rm -rf nvim-linux-x86_64.appimage squashfs-root
 }
