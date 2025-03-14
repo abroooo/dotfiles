@@ -22,7 +22,8 @@ function install_ubuntu() {
   sudo apt install helix
   
   # Install starship
-  curl -sS https://starship.rs/install.sh | sh
+  curl -fsSL https://starship.rs/install.sh | sh -s -- -f
+  echo 'eval "$(starship init $(basename "$SHELL"))"' >> ~/.profile
  
   install_eza_apt
   install_neovim
@@ -34,7 +35,8 @@ function install_debian() {
   sudo apt-get install -y git curl build-essential bat zsh ripgrep fzf stow tmux
 
   # Install starship
-  curl -sS https://starship.rs/install.sh | sh
+  curl -fsSL https://starship.rs/install.sh | sh -s -- -f
+  echo 'eval "$(starship init $(basename "$SHELL"))"' >> ~/.profile
 
   install_eza_apt
   install_neovim
@@ -120,6 +122,9 @@ function install() {
     exit 1
   fi
 
+  echo "####################################################################################################"
+  echo "####################################################################################################"
+  echo "####################################################################################################"
   # Detect OS and call the appropriate function
   if [[ -f /etc/arch-release ]]; then
     install_arch
@@ -136,6 +141,9 @@ function install() {
     exit 1
   fi
 
+  echo "####################################################################################################"
+  echo "####################################################################################################"
+  echo "####################################################################################################"
 }
 
 # Function to configure the shell to use zsh
