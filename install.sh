@@ -81,7 +81,14 @@ install_windows() {
 # Main function to run the installation and configuration
 function run() {
   install
-  configure_shell
+  read -p "Do you want to switch shell to zsh? (Y/n): " confirm
+  if [[ "$confirm" =~ ^[Nn]$ ]]; then
+    echo "leaving shell as is"
+  else
+    echo "switching shell to zsh"
+    configure_shell
+  fi
+  install_dots
 }
 
 
