@@ -90,6 +90,7 @@ function run() {
     echo "switching shell to zsh"
     configure_shell
   fi
+  echo "export ZDOTDIR=$HOME/.config/zsh" >> ~/.profile
   install_dots
 }
 
