@@ -8,6 +8,7 @@ return {
       animate = { enabled = true },
       bigfile = { enabled = true },
       dashboard = { enabled = false },
+      image = { enabled = false, inline = true, float = false },
       indent = { enabled = true },
       input = { enabled = true, icon = ' ', icon_hl = 'SnacksInputIcon', win = { style = 'input' }, expand = true },
       notifier = {

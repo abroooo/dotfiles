@@ -23,6 +23,26 @@ require('lazy').setup({
   -- modular approach: using `require 'path/name'` will
   -- include a plugin definition from file lua/path/name.lua
   {
+    'aaronhallaert/advanced-git-search.nvim',
+    cmd = { 'AdvancedGitSearch' },
+    config = function()
+      -- optional: setup telescope before loading the extension
+      require('telescope').setup {
+        -- move this to the place where you call the telescope setup function
+        extensions = {
+          advanced_git_search = {
+            -- See Config
+          },
+        },
+      }
+
+      require('telescope').load_extension 'advanced_git_search'
+    end,
+    dependencies = {
+      --- See dependencies
+    },
+  },
+  {
     'mrcjkb/rustaceanvim',
     version = '^5', -- Recommended
     lazy = false, -- This plugin is already lazy
@@ -102,6 +122,7 @@ require('lazy').setup({
   },
   { 'nvim-treesitter/nvim-treesitter-context' },
   require 'kickstart/plugins/gitsigns',
+  require 'kickstart/plugins/avante',
 
   require 'kickstart/plugins/which-key',
 
@@ -130,6 +151,7 @@ require('lazy').setup({
   require 'kickstart/plugins/obsidian',
   require 'kickstart/plugins/lualine',
   require 'kickstart/plugins/flash',
+  require 'kickstart/plugins/diffview',
 
   {
     'MeanderingProgrammer/render-markdown.nvim',
@@ -139,8 +161,18 @@ require('lazy').setup({
     -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
   },
   { 'mbbill/undotree' },
-  { 'rockerBOO/symbols-outline.nvim' },
-  { 'sindrets/diffview.nvim' },
+  {
+    'hedyhli/outline.nvim',
+    config = function()
+      -- Example mapping to toggle outline
+      vim.keymap.set('n', '<leader>o', '<cmd>Outline<CR>', { desc = 'Toggle Outline' })
+
+      require('outline').setup {
+        -- Your setup opts here (leave empty to use defaults)
+      }
+    end,
+  },
+
   { 'ThePrimeagen/git-worktree.nvim' },
   { 'akinsho/toggleterm.nvim', version = '*', config = true },
   { 'kevinhwang91/nvim-ufo', dependencies = 'kevinhwang91/promise-async' },
@@ -216,3 +248,10 @@ require('lspconfig').rust_analyzer.setup {
     },
   },
 }
+
+local function check_imagemagick()
+  local handle = io.popen 'which identify'
+  local result = handle:read '*a'
+  handle:close()
+  return result ~= ''
+end

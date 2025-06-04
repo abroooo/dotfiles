@@ -1,5 +1,5 @@
 return {
-  'epwalsh/obsidian.nvim',
+  'obsidian-nvim/obsidian.nvim',
   version = nil, -- recommended, use latest release instead of latest commit
   -- version = '*', -- recommended, use latest release instead of latest commit
   lazy = true,
@@ -75,3 +75,7 @@ return {
     -- see below for full list of options 👇
   },
 }
+-- vim = vim or {}
+-- vim.keymap.set('n', '<leader>os', ':ObsidianQuickSwitch<CR>', { desc = '[O]bsidian file search', silent = true, noremap = true })
+-- vim.keymap.set('n', '<leader>on', ':ObsidianNew<CR>', { desc = '[O]bsidian new note', silent = true, noremap = true })
+-- vim.keymap.set('n', '<leader>og', ':ObsidianSearch<CR>', { desc = '[O]bsidian file grep', silent = true, noremap = true })

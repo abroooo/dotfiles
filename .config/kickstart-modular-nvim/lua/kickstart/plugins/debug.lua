@@ -52,6 +52,8 @@ return {
     vim.keymap.set('n', '<leader>db', dap.toggle_breakpoint, { desc = '[D]ebug [B]reakpoint' })
     vim.keymap.set('n', '<leader>dgc', dap.run_to_cursor)
     vim.keymap.set('n', '<leader>dc', dap.continue, { desc = '[D]ebug [C]ontinue' })
+    vim.keymap.set('n', '<leader>drr', ':RustLsp runnables<CR>', { desc = '[D]ebug [R]ust [R]unnables' })
+    vim.keymap.set('n', '<leader>drr', ':RustLsp runnables<CR>', { desc = '[D]ebug [R]ust [D]ebuggables' })
     vim.keymap.set('n', '<leader><F2>', dap.step_over, { desc = '[D]ebug [C]ontinue' })
     vim.keymap.set('n', '<leader><F3>', dap.step_into, { desc = '[D]ebug [C]ontinue' })
     vim.keymap.set('n', '<leader><F4>', dap.step_back, { desc = '[D]ebug [C]ontinue' })
