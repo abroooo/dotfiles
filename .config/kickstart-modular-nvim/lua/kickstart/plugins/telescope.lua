@@ -138,6 +138,9 @@ return {
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
+      vim.keymap.set('n', '<leader>tw', builtin.lsp_workspace_symbols, { desc = '[T]elescope [w]workspace symbols', silent = true, noremap = true })
+      vim.keymap.set('n', '<leader>ts', builtin.lsp_document_symbols, { desc = '[T]elescope [s]ymbols', silent = true, noremap = true })
+      vim.keymap.set('n', '<leader>td', builtin.diagnostics, { desc = '[T]elescope [d]iagnostics', silent = true, noremap = true })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
       vim.keymap.set('n', ';', builtin.buffers, {})
       vim.keymap.set('n', '<leader>f;', ":lua require'telescope.builtin'.current_buffer_fuzzy_find()<CR>", {})
@@ -164,6 +167,9 @@ return {
       vim.keymap.set('n', '<leader>sn', function()
         builtin.find_files { cwd = vim.fn.stdpath 'config' }
       end, { desc = '[S]earch [N]eovim files' })
+      vim.keymap.set('n', '<leader>sgn', function()
+        builtin.live_grep { cwd = vim.fn.stdpath 'config' }
+      end, { desc = '[S]earch by [G]rep in [N]eovim files' })
     end,
   },
 }
