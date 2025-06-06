@@ -57,4 +57,5 @@ config.mouse_bindings = {
       -- action=wezterm.action{CompleteSelectionOrOpenLinkAtMouseCursor="PrimarySelection"},
    },
 }
+config.adjust_window_size_when_changing_font_size = false
 return config
