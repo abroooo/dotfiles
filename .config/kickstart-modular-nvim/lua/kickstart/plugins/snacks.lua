@@ -48,9 +48,17 @@ return {
                   title = 'Incomplete Tasks',
                   section = 'terminal',
                   cmd = string.format(
-                    "grep -r '- \\[ \\]' %s 2>/dev/null | head -5 | sed 's/.*://' | sed 's/^[[:space:]]*//' || echo 'No incomplete tasks found'",
-                    notes_dir .. '/' .. tasks_dir
+                    "rg '\\- \\[ \\]' %s -m 5 --no-heading 2>/dev/null | sed 's/.*://' | sed 's/^[[:space:]]*//' || echo 'No incomplete tasks found'",
+                    '/home/alex/git/notes'
                   ),
+                  --                   cmd = string.format(
+                  --                     "rg \'\- \[ \]\' ~/git/notes -m 5 --no-heading 2>/dev/null \
+                  -- | sed \'s/.*://\' | sed \'s/^[[:space:]]*//\' \
+                  -- || echo \'No incomplete tasks found\'
+                  -- ",
+                  --                     "grep -r '- \\[ \\]' %s 2>/dev/null | head -5 | sed 's/.*://' | sed 's/^[[:space:]]*//' || echo 'No incomplete tasks found'",
+                  --                     notes_dir .. '/' .. tasks_dir
+                  --                   ),
                   height = 6,
                   padding = 1,
                   ttl = 5 * 60, -- Cache for 5 minutes
