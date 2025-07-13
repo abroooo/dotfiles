@@ -7,7 +7,164 @@ return {
     opts = {
       animate = { enabled = true },
       bigfile = { enabled = true },
-      dashboard = { enabled = false },
+      dashboard = {
+        enabled = true,
+        sections = vim.tbl_filter(function(item)
+          return item ~= nil
+        end, {
+          { section = 'header' },
+          { section = 'keys', gap = 1, padding = 1 },
+
+          -- Obsidian integration sections (controlled by environment variables)
+          vim.env.DASHBOARD_SHOW_DAILY_NOTE ~= '0'
+              and function()
+                local today = os.date '%Y-%m-%d'
+                local notes_dir = vim.env.NOTES or vim.fn.expand '~/notes'
+                return {
+                  pane = 2,
+                  icon = ' ',
+                  title = "Today's Note",
+                  section = 'terminal',
+                  cmd = string.format(
+                    "if [ -f %s/journals/%s.md ]; then echo 'Daily note: %s'; else echo 'No daily note yet - press [d] to create'; fi",
+                    notes_dir,
+                    today,
+                    today
+                  ),
+                  height = 2,
+                  padding = 1,
+                  ttl = 60, -- Cache for 1 minute
+                }
+              end
+            or nil,
+
+          vim.env.DASHBOARD_SHOW_TASKS ~= '0'
+              and function()
+                local notes_dir = vim.env.NOTES or vim.fn.expand '~/notes'
+                local tasks_dir = vim.env.DASHBOARD_TASKS_DIR or '0_inbox'
+                return {
+                  pane = 2,
+                  icon = '󰸞 ',
+                  title = 'Incomplete Tasks',
+                  section = 'terminal',
+                  cmd = string.format(
+                    "grep -r '- \\[ \\]' %s 2>/dev/null | head -5 | sed 's/.*://' | sed 's/^[[:space:]]*//' || echo 'No incomplete tasks found'",
+                    notes_dir .. '/' .. tasks_dir
+                  ),
+                  height = 6,
+                  padding = 1,
+                  ttl = 5 * 60, -- Cache for 5 minutes
+                }
+              end
+            or nil,
+
+          vim.env.DASHBOARD_SHOW_RECENT ~= '0'
+              and function()
+                local notes_dir = vim.env.NOTES or vim.fn.expand '~/notes'
+                return {
+                  pane = 2,
+                  icon = ' ',
+                  title = 'Recent Notes',
+                  section = 'terminal',
+                  cmd = string.format(
+                    "find %s -name '*.md' -type f -exec ls -t {} + 2>/dev/null | head -5 | xargs -I {} basename {} .md || echo 'No notes found'",
+                    notes_dir
+                  ),
+                  height = 6,
+                  padding = 1,
+                  ttl = 2 * 60, -- Cache for 2 minutes
+                }
+              end
+            or nil,
+
+          vim.env.DASHBOARD_SHOW_IDEAS ~= '0'
+              and function()
+                local notes_dir = vim.env.NOTES or vim.fn.expand '~/notes'
+                local idea_tag = vim.env.DASHBOARD_IDEA_TAG or 'idea'
+                return {
+                  pane = 2,
+                  icon = '💡',
+                  title = 'Idea Notes',
+                  section = 'terminal',
+                  cmd = string.format(
+                    "find %s -name '*.md' -type f -exec grep -l '^tags:.*%s' {} \\; 2>/dev/null | xargs -I {} basename {} .md | sed 's/^/💡 /' || echo 'No idea notes found'",
+                    notes_dir,
+                    idea_tag
+                  ),
+                  height = 12,
+                  padding = 1,
+                  ttl = 5 * 60, -- Cache for 5 minutes
+                  indent = 2,
+                }
+              end
+            or nil,
+
+          { section = 'startup' },
+        }),
+
+        preset = {
+          header = [[
+                                                     
+       ∩───∩                                        
+      (  ◕   ◕ )     ╭─────────────────────────╮    
+       ○_____○       │    Welcome to Neovim!   │    
+                     ╰─────────────────────────╯    
+           ∩─────∩                                  
+          ( ◉     ◉)                               
+           ○─────○                                  
+                                                     
+    ～～～～～～～～～～～～～～～～～～～～～～～～～    
+                                                     ]],
+          keys = vim.tbl_filter(function(item)
+            return item ~= nil
+          end, {
+            { icon = ' ', key = 'f', desc = 'Find File', action = ":lua Snacks.dashboard.pick('files')" },
+            vim.env.DASHBOARD_SHOW_OBSIDIAN_KEYS ~= '0' and { icon = ' ', key = 'o', desc = 'Open Vault', action = ':ObsidianQuickSwitch' } or nil,
+            vim.env.DASHBOARD_SHOW_OBSIDIAN_KEYS ~= '0' and { icon = ' ', key = 'd', desc = 'Daily Note', action = ':ObsidianToday' } or nil,
+            vim.env.DASHBOARD_SHOW_OBSIDIAN_KEYS ~= '0' and { icon = ' ', key = 's', desc = 'Search Notes', action = ':ObsidianSearch' } or nil,
+            vim.env.DASHBOARD_SHOW_OBSIDIAN_KEYS ~= '0' and { icon = ' ', key = 'n', desc = 'New Note', action = ':ObsidianNew' } or nil,
+            vim.env.DASHBOARD_SHOW_IDEAS ~= '0' and {
+              icon = '💡',
+              key = 'i',
+              desc = 'Idea Notes',
+              action = function()
+                local notes_dir = vim.env.NOTES or vim.fn.expand '~/notes'
+                local idea_tag = vim.env.DASHBOARD_IDEA_TAG or 'idea'
+                local cmd = string.format("find %s -name '*.md' -type f -exec grep -l '^tags:.*%s' {} \\; 2>/dev/null", notes_dir, idea_tag)
+                local handle = io.popen(cmd)
+                local result = handle:read '*a'
+                handle:close()
+
+                local files = {}
+                for file in result:gmatch '[^\r\n]+' do
+                  table.insert(files, file)
+                end
+
+                if #files == 0 then
+                  vim.notify('No idea notes found', vim.log.levels.INFO)
+                  return
+                end
+
+                vim.ui.select(files, {
+                  prompt = 'Select idea note:',
+                  format_item = function(item)
+                    return '💡 ' .. vim.fn.fnamemodify(item, ':t:r')
+                  end,
+                }, function(choice)
+                  if choice then
+                    vim.cmd('edit ' .. vim.fn.fnameescape(choice))
+                  end
+                end)
+              end,
+            } or nil,
+            { icon = ' ', key = 'r', desc = 'Recent Files', action = ":lua Snacks.dashboard.pick('oldfiles')" },
+            { icon = ' ', key = 'g', desc = 'Find Text', action = ":lua Snacks.dashboard.pick('live_grep')" },
+            { icon = ' ', key = 'c', desc = 'Config', action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})" },
+            { icon = '󰒲 ', key = 'L', desc = 'Lazy', action = ':Lazy', enabled = package.loaded.lazy ~= nil },
+            { icon = ' ', key = 'q', desc = 'Quit', action = ':qa' },
+          }),
+        },
+      },
       image = { enabled = false, inline = true, float = false },
       indent = { enabled = true },
       input = { enabled = true, icon = ' ', icon_hl = 'SnacksInputIcon', win = { style = 'input' }, expand = true },
