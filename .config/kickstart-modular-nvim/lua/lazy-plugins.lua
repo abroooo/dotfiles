@@ -41,6 +41,13 @@ require('lazy').setup({
     dependencies = {
       --- See dependencies
     },
+    {
+      'saecki/crates.nvim',
+      tag = 'stable',
+      config = function()
+        require('crates').setup()
+      end,
+    },
   },
   {
     'mrcjkb/rustaceanvim',
