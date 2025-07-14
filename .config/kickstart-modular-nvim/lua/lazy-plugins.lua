@@ -49,32 +49,8 @@ require('lazy').setup({
       end,
     },
   },
-  {
-    'mrcjkb/rustaceanvim',
-    version = '^5', -- Recommended
-    lazy = false, -- This plugin is already lazy
-    config = function()
-      local mason_registry = require 'mason-registry'
-      local codelldb = mason_registry.get_package 'codelldb'
-      local extension_path = codelldb:get_install_path() .. '/extension'
-      local codelldb_path = extension_path .. 'adapter/codelldb'
-      local liblldb_path = extension_path .. 'lldb/lib/liblldb.dylib'
-      local cfg = require 'rustaceanvim.config'
-      vim.g.rustaceanvim = {
-        dap = {
-          adapter = cfg.get_codelldb_adapter(codelldb_path, liblldb_path),
-          -- adapter = {
-          --   type = 'codelldb',
-          --   name = 'codelldb',
-          --   command = codelldb_path,
-          --   lldb = {
-          --     name = 'lldb',
-          --     lib = liblldb_path,
-          --   },
-        },
-      }
-    end,
-  },
+  -- rustacean.nvim configuration is handled in lua/kickstart/plugins/rustacean.lua
+  require 'kickstart/plugins/rustacean',
 
   {
     'Bekaboo/dropbar.nvim',
@@ -175,7 +151,113 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>ol', '<cmd>Outline<CR>', { desc = 'Toggle Outline' })
 
       require('outline').setup {
-        -- Your setup opts here (leave empty to use defaults)
+        outline_window = {
+          position = 'right',
+          width = 25,
+          relative_width = true,
+          auto_close = false,
+          auto_jump = false,
+          jump_highlight_duration = 300,
+          center_on_jump = true,
+          show_numbers = false,
+          show_relative_numbers = false,
+          wrap = false,
+          show_cursorline = true,
+          hide_cursor = false,
+          focus_on_open = false,
+          winhl = '',
+        },
+        outline_items = {
+          show_symbol_details = true,
+          show_symbol_lineno = false,
+          highlight_hovered_item = true,
+          auto_set_cursor = true,
+          auto_unfold_hover = true,
+          fold_markers = { '', '' },
+          guide_markers = { '│', '└' },
+        },
+        symbol_folding = {
+          autofold_depth = 1,
+          auto_unfold = {
+            hovered = true,
+            only = true,
+          },
+          markers = { '', '' },
+        },
+        preview_window = {
+          auto_preview = false,
+          open_hover_on_preview = false,
+          width = 50,
+          min_width = 50,
+          relative_width = true,
+          border = 'single',
+          winhl = 'NormalFloat:',
+          winblend = 0,
+          live = false,
+        },
+        keymaps = {
+          show_help = '?',
+          close = {'<Esc>', 'q'},
+          goto_location = '<Cr>',
+          peek_location = 'o',
+          goto_and_close = '<S-Cr>',
+          restore_location = '<C-g>',
+          hover_symbol = '<C-space>',
+          toggle_preview = 'K',
+          rename_symbol = 'r',
+          code_actions = 'a',
+          fold = 'h',
+          unfold = 'l',
+          fold_toggle = '<Tab>',
+          fold_toggle_all = '<S-Tab>',
+          fold_all = 'W',
+          unfold_all = 'E',
+          fold_reset = 'R',
+          down_and_jump = '<C-j>',
+          up_and_jump = '<C-k>',
+        },
+        providers = {
+          priority = { 'lsp', 'coc', 'markdown', 'norg' },
+          lsp = {
+            blacklist_clients = {},
+          },
+        },
+        symbols = {
+          icons = {
+            File = { icon = '󰈙', hl = 'Identifier' },
+            Module = { icon = '󰆧', hl = 'Include' },
+            Namespace = { icon = '󰅪', hl = 'Include' },
+            Package = { icon = '󰏗', hl = 'Include' },
+            Class = { icon = '𝓒', hl = 'Type' },
+            Method = { icon = 'ƒ', hl = 'Function' },
+            Property = { icon = '', hl = 'Identifier' },
+            Field = { icon = '󰆨', hl = 'Identifier' },
+            Constructor = { icon = '', hl = 'Special' },
+            Enum = { icon = 'ℰ', hl = 'Type' },
+            Interface = { icon = '󰜰', hl = 'Type' },
+            Function = { icon = '', hl = 'Function' },
+            Variable = { icon = '', hl = 'Constant' },
+            Constant = { icon = '', hl = 'Constant' },
+            String = { icon = '𝓐', hl = 'String' },
+            Number = { icon = '#', hl = 'Number' },
+            Boolean = { icon = '⊨', hl = 'Boolean' },
+            Array = { icon = '󰅪', hl = 'Constant' },
+            Object = { icon = '⦿', hl = 'Type' },
+            Key = { icon = '🔐', hl = 'Type' },
+            Null = { icon = 'NULL', hl = 'Type' },
+            EnumMember = { icon = '', hl = 'Identifier' },
+            Struct = { icon = '𝓢', hl = 'Structure' },
+            Event = { icon = '🗲', hl = 'Type' },
+            Operator = { icon = '+', hl = 'Identifier' },
+            TypeParameter = { icon = '𝙏', hl = 'Identifier' },
+            Component = { icon = '󰅴', hl = 'Function' },
+            Fragment = { icon = '󰅴', hl = 'Constant' },
+            TypeAlias = { icon = ' ', hl = 'Type' },
+            Parameter = { icon = ' ', hl = 'Identifier' },
+            StaticMethod = { icon = ' ', hl = 'Function' },
+            Macro = { icon = ' ', hl = 'Function' },
+          },
+        },
       }
     end,
   },
@@ -246,15 +328,8 @@ require('lazy').setup({
   },
 })
 
-require('lspconfig').rust_analyzer.setup {
-  settings = {
-    ['rust-analyzer'] = {
-      diagnostics = {
-        enable = false,
-      },
-    },
-  },
-}
+-- Note: rust-analyzer is handled by rustacean.nvim, not by lspconfig directly
+-- This configuration is handled in the rustacean.nvim setup above
 
 local function check_imagemagick()
   local handle = io.popen 'which identify'
