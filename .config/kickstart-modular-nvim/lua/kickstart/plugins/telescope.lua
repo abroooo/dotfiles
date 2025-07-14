@@ -140,7 +140,7 @@ return {
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader>tw', builtin.lsp_workspace_symbols, { desc = '[T]elescope [w]workspace symbols', silent = true, noremap = true })
       vim.keymap.set('n', '<leader>ts', builtin.lsp_document_symbols, { desc = '[T]elescope [s]ymbols', silent = true, noremap = true })
-      vim.keymap.set('n', '<leader>td', builtin.diagnostics, { desc = '[T]elescope [d]iagnostics', silent = true, noremap = true })
+      -- vim.keymap.set('n', '<leader>td', builtin.diagnostics, { desc = '[T]elescope [d]iagnostics', silent = true, noremap = true })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
       vim.keymap.set('n', ';', builtin.buffers, {})
       vim.keymap.set('n', '<leader>f;', ":lua require'telescope.builtin'.current_buffer_fuzzy_find()<CR>", {})

@@ -135,6 +135,7 @@ require('lazy').setup({
   require 'kickstart/plugins/lualine',
   require 'kickstart/plugins/flash',
   require 'kickstart/plugins/diffview',
+  require 'kickstart/plugins/neotest',
 
   {
     'MeanderingProgrammer/render-markdown.nvim',
