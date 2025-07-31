@@ -62,16 +62,17 @@ return {
       -- Optional, if you want to change the date format of the default alias of daily notes.
       alias_format = '%B %-d, %Y',
       -- Optional, if you want to automatically insert a template from your template directory like 'daily.md'
-      template = nil,
+      template = 'daily_note',
     },
     -- customize how note file names are generated given the ID, target directory, and title.
     ---@param spec { id: string, dir: obsidian.Path, title: string|? }
     ---@return string|obsidian.Path The full path to the new note.
     note_path_func = function(spec)
-      local path = spec.dir / tostring(spec.title)
+      -- Use spec.id for daily notes, spec.title otherwise
+      local filename = spec.title or spec.id
+      local path = spec.dir / filename
       return path:with_suffix '.md'
     end,
-
     -- see below for full list of options 👇
   },
 }
