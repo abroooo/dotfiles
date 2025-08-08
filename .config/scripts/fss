@@ -1,0 +1,23 @@
+#!/bin/bash
+# Fuzzy search over Git stashes
+# Enter will view the stash
+# Ctrl-o will apply the selected stash
+# Ctrl-d will drop the selected stash
+
+function fss() {
+  git stash list --color=always \
+      --format="%C(auto)%gd %C(yellow)%h %C(auto)%s %C(black)%C(bold)%cr" "$@" |
+  fzf --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort --preview \
+         'f() { set -- $(echo -- "$@" | grep -o "stash@{[0-9]*}"); [ $# -eq 0 ] || git stash show --color=always -p $1 ; }; f {}' \
+      --header "enter to view, ctrl-o to apply, ctrl-d to drop" \
+      --bind "q:abort,ctrl-f:preview-page-down,ctrl-b:preview-page-up" \
+      --bind "ctrl-o:become:(echo {} | grep -o 'stash@{[0-9]*}' | head -1 | xargs git stash apply)" \
+      --bind "ctrl-d:become:(echo {} | grep -o 'stash@{[0-9]*}' | head -1 | xargs git stash drop)" \
+      --bind "ctrl-m:execute:
+                (grep -o 'stash@{[0-9]*}' | head -1 |
+                xargs -I % sh -c 'git stash show --color=always -p % | less -R') << 'FZF-EOF'
+                {}
+FZF-EOF" --preview-window=right:60%
+}
+
+fss "$@"
