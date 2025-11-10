@@ -113,6 +113,7 @@ return {
           { name = 'path' },
           { name = 'nvim_lsp_signature_help' },
           { name = 'buffer' },
+          { name = 'emoji' },
         },
       }
     end,

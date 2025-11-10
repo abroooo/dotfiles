@@ -20,6 +20,22 @@ require('lazy').setup({
   -- Use `opts = {}` to force a plugin to be loaded.
   --
 
+  {
+    'allaman/emoji.nvim',
+    dependencies = { 'hrsh7th/nvim-cmp' }, -- optional for completion
+    opts = {
+      -- default is false, also needed for blink.cmp integration!
+      enable_cmp_integration = true,
+      -- optional if your plugin installation directory
+      -- is not vim.fn.stdpath("data") .. "/lazy/
+    },
+    config = function(_, opts)
+      require('emoji').setup(opts)
+      -- optional for telescope integration
+      local ts = require('telescope').load_extension 'emoji'
+      vim.keymap.set('n', '<leader>se', ts.emoji, { desc = '[S]earch [E]moji' })
+    end,
+  },
   -- modular approach: using `require 'path/name'` will
   -- include a plugin definition from file lua/path/name.lua
   {
