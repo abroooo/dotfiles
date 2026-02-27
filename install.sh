@@ -151,7 +151,7 @@ function install() {
 function configure_shell() {
 if [[ "$OSTYPE" != "msys" && "$OSTYPE" != "cygwin" ]]; then
   if [[ "$SHELL" != *"zsh" ]]; then
-    sudo chsh -s $(which zsh)
+    sudo su chsh -s $(which zsh)
   fi
 fi
 }
