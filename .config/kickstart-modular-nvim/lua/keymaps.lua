@@ -55,7 +55,7 @@ vim.keymap.set('n', '<leader>tn', ':tabn<CR>', { desc = '[T]ab [N]ext' })
 -- Copilot
 -- vim.keymap.set('n', '<leader>ct', ':lua vim.g.copilot_enabled = not vim.g.copilot_enabled<CR>', { desc = '[O]bisian To[d]ay' })
 vim.keymap.set('n', '<leader>cs', ':Copilot status<CR>', { desc = '[C]opilot [S]tatus' })
-vim.keymap.set('n', '<leader>ct', function()
+vim.keymap.set('n', '<leader>ctt', function()
   if vim.g.copilot_enabled then
     -- vim.cmd 'Copilot disable'
     print 'Copilot Disabled'
@@ -69,6 +69,26 @@ end, { desc = '[C]opilot [T]oggle' })
 -- Diffview
 vim.keymap.set('n', '<leader>dh', ':DiffviewOpen HEAD<CR>', { desc = '[D]bisian [H]EAD' })
 vim.keymap.set('n', '<leader>dc', ':DiffviewClose<CR>', { desc = '[D]iffview[C]lose' })
+
+-- Layout Management
+local function create_dev_layout()
+  vim.cmd 'only' -- Close all but current window
+
+  -- Main file (left side)
+  vim.cmd 'edit lua/init.lua'
+
+  -- Vertical split for secondary file
+  vim.cmd 'vsplit lua/keymaps.lua'
+  vim.cmd 'vertical resize 80' -- Set width
+
+  -- Horizontal split in right pane for config
+  vim.cmd 'split lua/options.lua'
+
+  -- Move focus to main file
+  vim.cmd 'wincmd h'
+end
+
+vim.keymap.set('n', '<leader>dl', create_dev_layout, { desc = '[D]ev [L]ayout' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`

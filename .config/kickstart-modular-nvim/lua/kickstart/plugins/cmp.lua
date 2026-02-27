@@ -42,6 +42,9 @@ return {
       local luasnip = require 'luasnip'
       luasnip.config.setup {}
 
+      -- Register custom obsidian frontmatter source
+      cmp.register_source('obsidian_frontmatter', require('custom.cmp_obsidian_frontmatter').new())
+
       cmp.setup {
         snippet = {
           expand = function(args)
@@ -102,6 +105,18 @@ return {
           -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
           --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
         },
+        formatting = {
+          format = function(entry, vim_item)
+            -- Set custom kind text for obsidian_frontmatter source
+            if entry.source.name == 'obsidian_frontmatter' then
+              local data = entry.completion_item.data
+              if data and data.kind_text then
+                vim_item.kind = data.kind_text
+              end
+            end
+            return vim_item
+          end,
+        },
         sources = {
           {
             name = 'lazydev',
@@ -112,6 +127,7 @@ return {
           { name = 'luasnip' },
           { name = 'path' },
           { name = 'nvim_lsp_signature_help' },
+          { name = 'obsidian_frontmatter' },
           { name = 'buffer' },
           { name = 'emoji' },
         },

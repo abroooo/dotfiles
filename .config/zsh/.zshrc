@@ -110,3 +110,8 @@ eval "$(starship init zsh)"
 export PATH=$HOME/.tmux/plugins/t-smart-tmux-session-manager/bin:$PATH
 export LANG=en_US.UTF-8
 
+
+. "$HOME/.local/share/../bin/env"
+
+# opencode
+export PATH=/home/alex/.opencode/bin:$PATH

@@ -36,6 +36,17 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>se', ts.emoji, { desc = '[S]earch [E]moji' })
     end,
   },
+  {
+    'brianhuster/live-preview.nvim',
+    dependencies = {
+      -- You can choose one of the following pickers
+      'nvim-telescope/telescope.nvim',
+      'ibhagwan/fzf-lua',
+      'echasnovski/mini.pick',
+      'folke/snacks.nvim',
+    },
+  },
+  {
   -- modular approach: using `require 'path/name'` will
   -- include a plugin definition from file lua/path/name.lua
   {

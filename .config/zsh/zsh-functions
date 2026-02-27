@@ -112,3 +112,12 @@ git-fuzzy-log ()
 mdless(){
     glow "$@" -s dark | less -r
 }
+
+  function tmux-yank-line() {
+	  echo "hi"
+    print -rn -- "$BUFFER" | tmux load-buffer -
+    tmux save-buffer - | xclip -selection clipboard  # or wl-copy on Wayland
+  }
+echo "test"
+  zle -N tmux-yank-line
+  bindkey -M vicmd 'yy' tmux-yank-line
