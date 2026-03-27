@@ -34,7 +34,8 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
 -- Keep signcolumn on by default
-vim.opt.signcolumn = 'yes'
+-- Using 'yes:2' to reserve 2 columns (prevents shifting/glitches)
+vim.opt.signcolumn = 'yes:2'
 
 -- Decrease update time
 vim.opt.updatetime = 250
@@ -66,3 +67,5 @@ vim.opt.cursorline = true
 
 -- vim: ts=2 sts=2 sw=2 et
 vim.diagnostic.config { virtual_text = true }
+
+vim.opt.laststatus = 3 -- global statusline

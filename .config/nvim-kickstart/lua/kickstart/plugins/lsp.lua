@@ -1,3 +1,13 @@
+-- {
+--   'neovim/nvim-lspconfig',
+--   opts = {
+--     setup = {
+--       rust_analyzer = function()
+--         return true
+--       end,
+--     },
+--   },
+-- }
 return { -- LSP Configuration & Plugins
   'neovim/nvim-lspconfig',
   dependencies = {
@@ -13,6 +23,13 @@ return { -- LSP Configuration & Plugins
     -- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
     -- used for completion, annotations and signatures of Neovim apis
     { 'folke/neodev.nvim', opts = {} },
+  },
+  opts = {
+    setup = {
+      rust_analyzer = function()
+        return true
+      end,
+    },
   },
   config = function()
     -- Brief aside: **What is LSP?**
@@ -140,7 +157,7 @@ return { -- LSP Configuration & Plugins
       bashls = {},
       -- gopls = {},
       pyright = {},
-      rust_analyzer = {},
+      -- rust_analyzer = {},
       marksman = {},
       -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
       --

@@ -190,6 +190,21 @@ return {
         -- ts_ls = {},
         --
 
+        marksman = {
+          -- Markdown LSP server
+          -- Provides document outline, cross-references, diagnostics, and completion
+          settings = {
+            marksman = {
+              -- Enable completion for wiki-style links
+              completion = {
+                wiki = {
+                  enabled = true,
+                },
+              },
+            },
+          },
+        },
+
         lua_ls = {
           -- cmd = { ... },
           -- filetypes = { ... },
@@ -222,6 +237,7 @@ return {
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
+        'marksman', -- Markdown LSP server
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 

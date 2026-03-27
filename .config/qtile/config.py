@@ -29,12 +29,13 @@ from pathlib import Path
 # }
 
 layout_theme = { 
-    "border_width": 3,
-    "margin": 15,
-    # "border_focus": "FFFFFF",
-    "border_focus": "FF00FF",
-    "border_normal": colors[0],
-    "single_border_width": 3
+    "border_width": 2,
+    "margin": 12,
+    "border_focus": colors[2],  # Primary blue from color scheme
+    "border_normal": colors[3],  # Muted gray from color scheme
+    "single_border_width": 2,
+    "border_focus_stack": colors[4],  # Accent color for stack focus
+    "border_normal_stack": colors[3],
 }
 
 # --------------------------------------------------------
@@ -42,20 +43,59 @@ layout_theme = {
 # --------------------------------------------------------
 
 layouts = [
-    # layout.Columns(),
     layout.Max(**layout_theme),
-    # Try more layouts by unleashing below layouts.
-    # layout.Stack(num_stacks=2),
-    # layout.Bsp(),
-    # layout.Matrix(),
-    layout.MonadTall(**layout_theme),
-    layout.MonadWide(**layout_theme),
+    layout.MonadTall(
+        ratio=0.6,
+        max_ratio=0.85,
+        min_ratio=0.15,
+        change_ratio=0.05,
+        **layout_theme
+    ),
+    layout.MonadWide(
+        ratio=0.65,
+        max_ratio=0.85,
+        min_ratio=0.15,
+        change_ratio=0.05,
+        **layout_theme
+    ),
     layout.RatioTile(**layout_theme),
-    # layout.Tile(),
-    # layout.TreeTab(),
-    # layout.VerticalTile(),
-    # layout.Zoomy(),
-    layout.Floating()
+    layout.Stack(
+        num_stacks=2,
+        **layout_theme
+    ),
+    layout.Bsp(
+        fair=False,
+        grow_amount=10,
+        **layout_theme
+    ),
+    layout.Columns(
+        border_on_single=True,
+        split=False,
+        **{k: v for k, v in layout_theme.items() if not k.startswith('border_focus_stack') and not k.startswith('border_normal_stack')}
+    ),
+    layout.Matrix(
+        columns=2,
+        **layout_theme
+    ),
+    layout.Floating(
+        float_rules=[
+            *layout.Floating.default_float_rules,
+            Match(wm_class="confirmreset"),
+            Match(wm_class="makebranch"),
+            Match(wm_class="maketag"),
+            Match(wm_class="ssh-askpass"),
+            Match(title="branchdialog"),
+            Match(title="pinentry"),
+            Match(wm_class="pavucontrol"),
+            Match(wm_class="nm-connection-editor"),
+            Match(wm_class="blueman-manager"),
+            Match(wm_class="gnome-disks"),
+            Match(wm_class="qalculate-gtk"),
+            Match(wm_class="rofi"),
+            Match(wm_class="flameshot"),
+        ],
+        **layout_theme
+    )
 ]
 
 group_layouts = ["monadtall", "monadtall", "monadtall", "monadtall", "monadtall", "monadtall", "monadtall", "monadtall", "monadtall"]
@@ -111,6 +151,15 @@ wallpaperSettings = {
     "wallpaper_mode": "fill",
 }
 
+# Enhanced screen configuration
+def get_num_monitors():
+    import subprocess
+    try:
+        output = subprocess.check_output(['xrandr', '--query'], universal_newlines=True)
+        return len([line for line in output.splitlines() if ' connected' in line])
+    except:
+        return 1
+
 
 screens = [
     Screen(
@@ -126,19 +175,27 @@ screens = [
 
 
 #----------------------------------------------------------------------------
-# Miscelanous settings
+# Enhanced Qtile Settings
 #----------------------------------------------------------------------------
 
 dgroups_key_binder = None
 dgroups_app_rules = []  # type: list
+
+# Mouse and focus behavior
 follow_mouse_focus = True
 bring_front_click = False
 floats_kept_above = True
 cursor_warp = False
+
+# Window behavior
 auto_fullscreen = True
 focus_on_window_activation = "smart"
 reconfigure_screens = True
-auto_minimize = False
+auto_minimize = True
+
+# Performance optimizations
+respect_minimize_requests = True
+window_close_animation = True
 
 # If something Java related is not working, set this to "LG3D"
 wmname = "Qtile"

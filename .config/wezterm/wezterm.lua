@@ -26,7 +26,7 @@ local config = {}
 
 -- font
 config.font = wezterm.font('JetBrains Mono', { weight = 'Regular' })
-config.font_size = 19.0
+config.font_size = 13.0
 config.line_height = 1.0
 
 -- appearance
@@ -57,5 +57,12 @@ config.mouse_bindings = {
       -- action=wezterm.action{CompleteSelectionOrOpenLinkAtMouseCursor="PrimarySelection"},
    },
 }
+
+-- config.default_prog = { 'tmux', 'a', '||', 'tmux' }
+-- config.default_prog = { 'zsh', '-c', 'tmux attach || tmux' }
+-- config.default_prog =
+--    { 'zsh', '-c', [[
+--     (tmux attach -t mysession || tmux new -s mysession); zsh
+--  '-l', ]] }
 config.adjust_window_size_when_changing_font_size = false
 return config

@@ -22,7 +22,7 @@ setxkbmap eu
 
 # Load picom
 # picom &
-picom & #--backend glx &
+#picom & #--backend glx &
 
 # Load power manager
 xfce4-power-manager &

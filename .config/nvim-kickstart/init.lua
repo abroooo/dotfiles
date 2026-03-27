@@ -348,6 +348,51 @@ require('lazy').setup({
     'mrcjkb/rustaceanvim',
     version = '^5', -- Recommended
     lazy = false, -- This plugin is already lazy
+    config = function()
+      local mason_registry = require 'mason-registry'
+      local codelldb = mason_registry.get_package 'codelldb'
+      local extension_path = codelldb:get_install_path() .. '/extension/'
+      local codelldb_path = extension_path .. 'adapter/codelldb'
+      local liblldb_path = extension_path .. 'lldb/lib/liblldb.dylib'
+      -- If you are on Linux, replace the line above with the line below:
+      -- local liblldb_path = extension_path .. "lldb/lib/liblldb.so"
+      local cfg = require 'rustaceanvim.config'
+
+      vim.g.rustaceanvim = {
+        dap = {
+          adapter = cfg.get_codelldb_adapter(codelldb_path, liblldb_path),
+        },
+      }
+    end,
+  },
+  {
+    'mfussenegger/nvim-dap',
+  },
+  {
+    'mfussenegger/nvim-dap',
+    config = function()
+      local dap, dapui = require 'dap', require 'dapui'
+      dap.listeners.before.attach.dapui_config = function()
+        dapui.open()
+      end
+      dap.listeners.before.launch.dapui_config = function()
+        dapui.open()
+      end
+      dap.listeners.before.event_terminated.dapui_config = function()
+        dapui.close()
+      end
+      dap.listeners.before.event_exited.dapui_config = function()
+        dapui.close()
+      end
+    end,
+  },
+
+  {
+    'rcarriga/nvim-dap-ui',
+    dependencies = { 'mfussenegger/nvim-dap', 'nvim-neotest/nvim-nio' },
+    config = function()
+      require('dapui').setup()
+    end,
   },
   {
     'folke/flash.nvim',
@@ -837,19 +882,6 @@ require('lazy').setup({
     end,
   },
   {
-    'NeogitOrg/neogit',
-    'nvim-lua/plenary.nvim', -- required
-    dependencies = {
-      'sindrets/diffview.nvim', -- optional - Diff integration
-
-      -- Only one of these is needed.
-      'nvim-telescope/telescope.nvim', -- optional
-      'ibhagwan/fzf-lua', -- optional
-      'echasnovski/mini.pick', -- optional
-    },
-    config = true,
-  },
-  {
     'ThePrimeagen/git-worktree.nvim',
     dependencies = { 'plenary.nvim', 'telescope.nvim' },
   },
@@ -1081,9 +1113,229 @@ vim.keymap.set('n', '<leader>oc', ':lua ShowCheatsheet()<CR>', { desc = '[O]bsid
 vim.keymap.set('n', '<leader>dm', ':DiffviewOpen  --diffthis master<CR>', { desc = '[D]iffview master', silent = true, noremap = true })
 vim.keymap.set('n', '<leader>nl', ':Neogit log<CR>', { desc = '[N]eogit log', silent = true, noremap = true })
 vim.keymap.set('n', '<leader><tab>', ':ClangdSwitchSourceHeader<CR>', { desc = 'Switch source header [cpp]', silent = true, noremap = true })
+vim.keymap.set('n', '<leader>nn', ':NvimTreeToggle<CR>', { desc = 'NvimTreeToggle', silent = true, noremap = true })
 vim.keymap.set({ 'n', 'v' }, '<leader>y', '"+y', { desc = 'Yank to clipboard', silent = true, noremap = true })
 vim.keymap.set({ 'n', 'v' }, '<leader>yy', '"+Y', { desc = 'Yank line to clipboard', silent = true, noremap = true })
 vim.keymap.set('i', 'jj', '<esc>')
 vim.api.nvim_set_keymap('n', '<leader>mdp', ':lua InsertMarkdownURL()<CR>', { silent = true, noremap = true })
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+--
+-- local api = vim.api
+-- local uv = vim.loop
+--
+-- -- Function to list files in a directory
+-- local function list_files_in_directory(directory)
+--   local files = {}
+--   print 'hallo from list_files_in_directory'
+--   -- print(directory)
+--   -- directory = '/home/alex'
+--   print(directory)
+--   local handle = uv.fs_scandir(directory)
+--   if handle then
+--     while true do
+--       local name, type = uv.fs_scandir_next(handle)
+--       if not name then
+--         break
+--       end
+--       if type == 'file' then
+--         table.insert(files, name)
+--       end
+--     end
+--   end
+--   print(files[3])
+--   return files
+-- end
+--
+-- -- Function to add virtual text to buffer using extmarks
+-- local function add_virtual_text(bufnr, lines)
+--   local ns_id = api.nvim_create_namespace 'dataview_namespace'
+--   for i, line in ipairs(lines) do
+--     api.nvim_buf_set_extmark(bufnr, ns_id, i - 1, 0, {
+--       virt_text = { { line, 'Comment' } },
+--       virt_text_pos = 'eol',
+--     })
+--   end
+-- end
+--
+-- -- Function to handle dataview query and show results
+-- local function handle_dataview_query()
+--   local bufnr = api.nvim_get_current_buf()
+--   local lines = api.nvim_buf_get_lines(bufnr, 0, -1, false)
+--   local directory = '/home/alex/git/notes/2_areas' -- Change this to the desired directory
+--
+--   -- Scan for a query
+--   for _, line in ipairs(lines) do
+--     if line:match '%%dataview query:list files%%' then
+--       local files = list_files_in_directory(directory)
+--       add_virtual_text(bufnr, files)
+--       return
+--     end
+--   end
+--   print 'No valid dataview query found.'
+--   -- Replace buffer content without the query
+--   api.nvim_buf_set_lines(bufnr, 0, -1, false, new_lines)
+-- end
+--
+-- -- Create user command
+-- api.nvim_create_user_command('DataviewRun', handle_dataview_query, {})
+
+local api = vim.api
+local uv = vim.loop
+local os_date = os.date
+
+-- Function to list files with modification times in a directory
+local function list_recent_files(directory)
+  local files = {}
+  local handle = uv.fs_scandir(directory)
+  print(directory)
+  if handle then
+    while true do
+      local name, type = uv.fs_scandir_next(handle)
+      if not name then
+        break
+      end
+      if type == 'file' then
+        local path = directory .. '/' .. name
+        local stat = uv.fs_stat(path)
+        if stat then
+          table.insert(files, { name = name, mtime = stat.mtime.sec })
+        end
+      end
+    end
+  end
+
+  -- Sort files by modification time (descending)
+  table.sort(files, function(a, b)
+    return a.mtime > b.mtime
+  end)
+
+  -- Limit to 25 results
+  local limited_files = {}
+  for i = 1, math.min(5, #files) do
+    local formatted_time = os_date('%d.%m.%Y - %H:%M', files[i].mtime)
+    table.insert(limited_files, files[i].name .. ' | Last modified: ' .. formatted_time)
+  end
+  print(limited_files[3])
+
+  return limited_files
+end
+function get_current_line()
+  -- Get current line number
+  local line_num = vim.api.nvim_win_get_cursor(0)[1]
+
+  -- Get the actual line content
+  local line = vim.api.nvim_buf_get_lines(0, line_num - 1, line_num, true)[1]
+
+  print('current line: ' .. line)
+  return line
+end
+
+-- Function to add virtual text to buffer using extmarks
+local function add_virtual_text(bufnr, lines)
+  -- -- Create a namespace for our marks
+  -- local ns = api.nvim_create_namespace 'virtual_text_ns'
+  --
+  -- -- Function to add virtual text
+  -- local function add_virtual_text(line, text)
+  --   -- Ensure the line exists by adding newlines if needed
+  --   local current_lines = api.nvim_buf_line_count(0)
+  --   if line >= current_lines then
+  --     -- Add newlines to reach the desired line number
+  --     local newlines = {}
+  --     for i = 1, line - current_lines + 1 do
+  --       table.insert(newlines, '')
+  --     end
+  --
+  --     -- Add the new lines at the end of the buffer
+  --     api.nvim_buf_set_lines(0, -1, -1, false, newlines)
+  --   end
+  --
+  --   -- Add the virtual text
+  --   api.nvim_buf_set_extmark(
+  --     0, -- buffer
+  --     ns, -- namespace
+  --     line - 1, -- 0-based line number
+  --     0, -- column
+  --     {
+  --       virt_text = { { text, 'Comment' } }, -- virtual text with highlight group
+  --       virt_text_pos = 'eol', -- position at end of line
+  --     }
+  --   )
+  -- end
+  --
+  -- -- Example usage
+  -- add_virtual_text(50, 'This is virtual text on line 50')
+  local ns_id = api.nvim_create_namespace 'dataview_namespace'
+
+  -- Ensure buffer has enough lines
+  local buf_line_count = #api.nvim_buf_get_lines(bufnr, 0, -1, false)
+  local needed_lines = math.max(#lines - buf_line_count, 0)
+  if needed_lines > 0 then
+    for _ = 1, needed_lines do
+      api.nvim_buf_set_lines(bufnr, -1, -1, false, { '' })
+    end
+  end
+
+  -- Set virtual text
+  local start_line = vim.api.nvim_win_get_cursor(0)[1]
+  for i, line in ipairs(lines) do
+    local current_lines = vim.api.nvim_buf_line_count(0)
+    -- print(line)
+    if i + start_line >= current_lines then
+      print 'add line'
+      local lines = {}
+      table.insert(lines, '')
+      api.nvim_buf_set_lines(0, -1, -1, false, lines)
+    end
+    api.nvim_buf_set_extmark(bufnr, ns_id, i + start_line, 0, {
+      virt_text = { { line, 'Comment' } },
+      virt_text_pos = 'eol',
+    })
+  end
+end
+
+-- -- Function to handle dataview query and show results
+local function handle_dataview_query()
+  local bufnr = api.nvim_get_current_buf()
+  local lines = api.nvim_buf_get_lines(bufnr, 0, -1, false)
+  local directory = '/home/alex/git/notes' -- Change this to the desired directory
+  local new_lines = {}
+
+  -- local line = [[TABLE dateformat(file.mtime, "dd.MM.yyyy - HH:mm") AS "Last modified" FROM "" SORT file.mtime DESC LIMIT 25]]
+  --
+  -- local dateformat, alias, from, sort, limit = line:match '^TABLE%s+dateformat%(([^)]+)%,s+"([^"]+)")%s+FROM%s+"([^"]+)"%s+SORT%s+(.+)%s+LIMIT%s+(%d+)$'
+  --
+  -- print('Date format:', dateformat)
+  -- print('Alias:', alias)
+  -- print('From:', from)
+  -- print('Sort:', sort)
+  -- print('Limit:', limit)
+  -- -- Scan for a query and remove it
+  for _, line in ipairs(lines) do
+    -- print(line)
+    if line:match 'dataview' then
+      print 'dataview!!!!!!!!!!'
+    end
+    local pattern = 'dataview'
+    --TABLE dateformat%((.-)%) AS "(.-)" FROM "(.-)" SORT (.-) DESC LIMIT (%d+)'
+
+    local pattern = 'TABLE dateformat%((.-)%) AS "(.-)" FROM "(.-)" SORT (.-) DESC LIMIT (%d+)'
+    -- if line:match 'TABLE dateformat%([^,]+, %"%d%.%m%.%Y %- %H%:%M%"%) AS %"Last modified%" FROM %"" SORT file%.mtime DESC LIMIT 25' then
+    -- if line:match '^TABLE%s+dateformat%(([^)]+)%,s+"([^"]+)")%s+FROM%s+"([^"]+)"%s+SORT%s+(.+)%s+LIMIT%s+(%d+)$' then
+    if line:match(pattern) then
+      --if line:match pattern
+      print 'matches!'
+      local files = list_recent_files(directory)
+      add_virtual_text(bufnr, files)
+    else
+      table.insert(new_lines, line)
+    end
+  end
+
+  -- Replace buffer content without the query
+  -- api.nvim_buf_set_lines(bufnr, 0, -1, false, new_lines)
+end
+
+-- Create user command
+api.nvim_create_user_command('DataviewRun', handle_dataview_query, {})

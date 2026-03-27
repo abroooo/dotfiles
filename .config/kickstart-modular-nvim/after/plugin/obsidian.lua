@@ -18,7 +18,7 @@ vim.keymap.set('n', '<leader>oj', function()
     prompt_title = 'Journal Files',
     cwd = notes_path .. '/journals',
     hidden = true,
-    find_command = { 'rg', '--files', '--sortr', 'path' },
+    find_command = { 'rg', '--files', '--sortr', 'modified', '--glob', '[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9].md' },
   }
 end, { desc = '[O]bsidian [J]ournal files' })
 
@@ -51,3 +51,69 @@ vim.keymap.set('n', '<leader>oi', function()
   local cmd = string.format('ObsidianNewFromTemplate %s new_jira_issue.md', filename)
   vim.cmd(cmd)
 end, { desc = '[O]bsidian Jira [I]ssue' })
+
+-- Search for all dataview markers
+vim.keymap.set('n', '<leader>om', function()
+  local notes_path = vim.env.NOTES
+
+  -- Define your dataview markers here
+  local markers = {
+    'event',
+    'lowlights',
+    'highlights',
+    'til',
+    'moquotes',
+    'mo',
+  }
+
+  -- Create regex pattern that matches any marker with non-empty value
+  -- Pattern: (marker1|marker2|...):: .+
+  local pattern = '(' .. table.concat(markers, '|') .. '):: .+'
+
+  require('telescope.builtin').grep_string {
+    prompt_title = 'Dataview Markers (All)',
+    cwd = notes_path,
+    search = pattern,
+    use_regex = true,
+    additional_args = function()
+      return { '--sortr', 'modified' }
+    end,
+  }
+end, { desc = '[O]bsidian dataview [M]arkers (all)' })
+
+-- Search for specific dataview marker
+vim.keymap.set('n', '<leader>oM', function()
+  local notes_path = vim.env.NOTES
+
+  -- Define your dataview markers here
+  local markers = {
+    'event',
+    'lowlights',
+    'highlights',
+    'til',
+    'moquotes',
+    'mo',
+  }
+
+  -- Prompt user to select a marker
+  vim.ui.select(markers, {
+    prompt = 'Select dataview marker:',
+  }, function(choice)
+    if not choice then
+      return
+    end
+
+    -- Search for the selected marker with non-empty value
+    local pattern = choice .. ':: .+'
+
+    require('telescope.builtin').grep_string {
+      prompt_title = 'Dataview: ' .. choice,
+      cwd = notes_path,
+      search = pattern,
+      use_regex = true,
+      additional_args = function()
+        return { '--sortr', 'modified' }
+      end,
+    }
+  end)
+end, { desc = '[O]bsidian dataview [M]arkers (select)' })
