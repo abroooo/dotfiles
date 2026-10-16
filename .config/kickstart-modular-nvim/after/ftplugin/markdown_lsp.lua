@@ -1,101 +1,62 @@
--- Marksman LSP specific configuration for markdown files
--- This ensures marksman works well alongside obsidian and other markdown plugins
+-- Marksman LSP for markdown files, configured to play nice with obsidian.nvim.
+-- Native nvim-0.11+ API (vim.lsp.config/enable) to avoid the deprecated
+-- `require('lspconfig')` framework.
 
-local function setup_marksman_lsp()
-  -- Check if marksman is available
-  if not vim.fn.executable('marksman') then
-    return
+-- True when the buffer's file lives inside an Obsidian vault (a `.obsidian/`
+-- dir somewhere up the tree). Inside a vault obsidian.nvim owns completion.
+local function in_obsidian_vault(bufnr)
+  local fname = vim.api.nvim_buf_get_name(bufnr)
+  if fname == '' then
+    return false
   end
-
-  -- Get LSP capabilities with enhanced markdown support
-  local capabilities = require('cmp_nvim_lsp').default_capabilities()
-  
-  -- Enhanced capabilities for markdown
-  capabilities.textDocument.completion.completionItem.snippetSupport = true
-  capabilities.textDocument.completion.completionItem.resolveSupport = {
-    properties = { 'documentation', 'detail', 'additionalTextEdits' }
-  }
-
-  -- Configure marksman specifically for this buffer
-  local lspconfig = require('lspconfig')
-  
-  -- Only start marksman if it's not already attached
-  local clients = vim.lsp.get_clients({ bufnr = 0, name = 'marksman' })
-  if #clients == 0 then
-    lspconfig.marksman.setup({
-      capabilities = capabilities,
-      filetypes = { 'markdown' },
-      root_dir = function(fname)
-        -- Try to find project root, fallback to file directory
-        return lspconfig.util.find_git_ancestor(fname) 
-            or lspconfig.util.find_package_json_ancestor(fname)
-            or vim.fn.fnamemodify(fname, ':p:h')
-      end,
-      settings = {
-        marksman = {
-          completion = {
-            wiki = {
-              enabled = true,
-            },
-          },
-          -- Enable document symbols for outline
-          documentSymbol = {
-            enabled = true,
-          },
-          -- Enable hover information
-          hover = {
-            enabled = true,
-          },
-          -- Enable cross-references
-          references = {
-            enabled = true,
-          },
-        },
-      },
-      on_attach = function(client, bufnr)
-        -- Markdown-specific LSP keymaps
-        local opts = { buffer = bufnr, silent = true }
-        
-        -- Document outline
-        vim.keymap.set('n', '<leader>mo', '<cmd>Telescope lsp_document_symbols<CR>', 
-          vim.tbl_extend('force', opts, { desc = '[M]arkdown [O]utline' }))
-        
-        -- Find references
-        vim.keymap.set('n', '<leader>mr', '<cmd>Telescope lsp_references<CR>', 
-          vim.tbl_extend('force', opts, { desc = '[M]arkdown [R]eferences' }))
-        
-        -- Go to definition (for links)
-        vim.keymap.set('n', '<leader>md', vim.lsp.buf.definition, 
-          vim.tbl_extend('force', opts, { desc = '[M]arkdown [D]efinition' }))
-        
-        -- Hover for link information
-        vim.keymap.set('n', '<leader>mh', vim.lsp.buf.hover, 
-          vim.tbl_extend('force', opts, { desc = '[M]arkdown [H]over' }))
-        
-        -- Workspace symbols (across all markdown files)
-        vim.keymap.set('n', '<leader>ms', '<cmd>Telescope lsp_dynamic_workspace_symbols<CR>', 
-          vim.tbl_extend('force', opts, { desc = '[M]arkdown [S]ymbols' }))
-
-        print("Marksman LSP attached to markdown buffer")
-      end,
-    })
-    
-    -- Start the LSP client for this buffer
-    vim.cmd('LspStart marksman')
-  end
+  local found = vim.fs.find('.obsidian', {
+    path = vim.fs.dirname(fname),
+    upward = true,
+    type = 'directory',
+  })
+  return #found > 0
 end
 
--- Set up marksman with proper timing
-vim.defer_fn(setup_marksman_lsp, 200)
+local function marksman_on_attach(client, bufnr)
+  -- Inside an Obsidian vault, let obsidian.nvim provide completion and silence
+  -- marksman's duplicate [[link]]/#tag items. Outside a vault keep full
+  -- marksman completion. Diagnostics, symbols, goto and references stay active.
+  if in_obsidian_vault(bufnr) then
+    client.server_capabilities.completionProvider = nil
+  end
 
--- Also set up on BufEnter in case the first attempt fails
-vim.api.nvim_create_autocmd('BufEnter', {
-  buffer = 0,
-  once = true,
-  callback = function()
-    local clients = vim.lsp.get_clients({ bufnr = 0, name = 'marksman' })
-    if #clients == 0 then
-      setup_marksman_lsp()
-    end
-  end,
-})
+  local opts = { buffer = bufnr, silent = true }
+  vim.keymap.set('n', '<leader>mo', '<cmd>Telescope lsp_document_symbols<CR>', vim.tbl_extend('force', opts, { desc = '[M]arkdown [O]utline' }))
+  vim.keymap.set('n', '<leader>mr', '<cmd>Telescope lsp_references<CR>', vim.tbl_extend('force', opts, { desc = '[M]arkdown [R]eferences' }))
+  vim.keymap.set('n', '<leader>md', vim.lsp.buf.definition, vim.tbl_extend('force', opts, { desc = '[M]arkdown [D]efinition' }))
+  vim.keymap.set('n', '<leader>mh', vim.lsp.buf.hover, vim.tbl_extend('force', opts, { desc = '[M]arkdown [H]over' }))
+  vim.keymap.set('n', '<leader>ms', '<cmd>Telescope lsp_dynamic_workspace_symbols<CR>', vim.tbl_extend('force', opts, { desc = '[M]arkdown [S]ymbols' }))
+end
+
+-- Register marksman once; vim.lsp.enable auto-starts it for markdown buffers.
+if not vim.g._marksman_configured and vim.fn.executable 'marksman' == 1 then
+  vim.g._marksman_configured = true
+
+  local capabilities = require('cmp_nvim_lsp').default_capabilities()
+  capabilities.textDocument.completion.completionItem.snippetSupport = true
+  capabilities.textDocument.completion.completionItem.resolveSupport = {
+    properties = { 'documentation', 'detail', 'additionalTextEdits' },
+  }
+
+  -- Merges over the config bundled in nvim-lspconfig's lsp/marksman.lua.
+  vim.lsp.config('marksman', {
+    capabilities = capabilities,
+    root_markers = { '.obsidian', '.marksman.toml', '.git' },
+    settings = {
+      marksman = {
+        completion = { wiki = { enabled = true } },
+        documentSymbol = { enabled = true },
+        hover = { enabled = true },
+        references = { enabled = true },
+      },
+    },
+    on_attach = marksman_on_attach,
+  })
+
+  vim.lsp.enable 'marksman'
+end
