@@ -46,6 +46,7 @@ return {
       cmp.register_source('obsidian_frontmatter', require('custom.cmp_obsidian_frontmatter').new())
 
       cmp.setup {
+        performance = { fetching_timeout = 2000 },
         snippet = {
           expand = function(args)
             luasnip.lsp_expand(args.body)
@@ -118,6 +119,7 @@ return {
           end,
         },
         sources = {
+          { name = 'minuet' },
           {
             name = 'lazydev',
             -- set group index to 0 to skip loading LuaLS completions as lazydev recommends it
