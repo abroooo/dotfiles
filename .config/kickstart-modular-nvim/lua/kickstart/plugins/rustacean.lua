@@ -16,6 +16,11 @@ return {
     vim.g.rustaceanvim = {
       server = {
         capabilities = capabilities,
+        -- Use the stable toolchain's rust-analyzer, not Mason's stale standalone
+        -- binary. Stable RA (1.98+) is >= every toolchain's proc-macro server
+        -- (incl. the esp fork), so it loads proc-macros without ABI mismatch.
+        -- cargo is still selected per-project by the rustup proxy on PATH.
+        cmd = { 'rustup', 'run', 'stable', 'rust-analyzer' },
         on_attach = function(client, bufnr)
           vim.keymap.set('n', '<leader>cR', function()
             vim.cmd.RustLsp('codeAction')
